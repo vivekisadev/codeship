@@ -4,8 +4,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "PUSH_TO_GITHUB") {
     console.log("LeetSync Background: Pushing to backend API...", message.payload);
     
-    // We fetch from localhost:3000 but include credentials so NextAuth sees the session cookie
-    fetch("http://localhost:3000/api/submissions", {
+    // We fetch from the live Vercel URL but include credentials so NextAuth sees the session cookie
+    fetch("https://leetsync-bay.vercel.app/api/submissions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

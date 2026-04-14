@@ -28,7 +28,7 @@ export default function LoginPage() {
         </div>
 
         <button 
-          onClick={() => signIn("github", { callbackUrl: '/settings' })}
+          onClick={() => signIn("github", { callbackUrl: '/dashboard' })}
           className="pill-dark" 
           style={{ width: '100%', padding: '12px', marginTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}
         >

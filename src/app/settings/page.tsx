@@ -73,6 +73,9 @@ export default function SettingsPage() {
           LeetSync
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <Link href="/dashboard" className="pill-outline" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
+            Dashboard
+          </Link>
           <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--accent-primary)', overflow: 'hidden' }}>
             {session?.user?.image && <img src={session.user.image} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
           </div>
