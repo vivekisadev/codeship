@@ -5,12 +5,14 @@ import prisma from "@/lib/db";
 
 // Handle CORS for preflight requests from the extension (if made directly from content script)
 export async function OPTIONS(req: Request) {
+  const origin = req.headers.get("origin") || "*";
   return new NextResponse(null, {
     status: 204,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": origin,
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Credentials": "true",
     },
   });
 }
@@ -99,11 +101,18 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, message: "Successfully pushed to GitHub!" }, {
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": req.headers.get("origin") || "*",
+        "Access-Control-Allow-Credentials": "true",
       }
     });
   } catch (error: any) {
     console.error("Webhook Error:", error);
-    return NextResponse.json({ error: "Internal Server Error", details: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error", details: error.message }, { 
+      status: 500,
+      headers: {
+        "Access-Control-Allow-Origin": req.headers.get("origin") || "*",
+        "Access-Control-Allow-Credentials": "true",
+      }
+    });
   }
 }

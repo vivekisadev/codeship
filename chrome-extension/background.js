@@ -14,7 +14,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       body: JSON.stringify(message.payload)
     })
     .then(res => res.json())
-    .then(data => console.log("LeetSync Background: Push Response", data))
-    .catch(err => console.error("LeetSync Background: Push Failed", err));
+    .then(data => {
+      console.log("LeetSync Background: Push Response", data);
+      sendResponse({ success: data.success, data: data });
+    })
+    .catch(err => {
+      console.error("LeetSync Background: Push Failed", err);
+      sendResponse({ success: false, error: err.toString() });
+    });
+
+    return true; // Keep the message channel open for async response
   }
 });
