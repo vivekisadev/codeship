@@ -8,9 +8,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { InstallModal } from "../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const [showInstallModal, setShowInstallModal] = useState(false);
+  const { data: session, status } = useSession();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -46,8 +48,16 @@ export default function Home() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <ThemeToggle />
-          <Link href="/login" className="btn-secondary">Log In</Link>
-          <Link href="/login" className="btn-primary">Book a Demo</Link>
+          {status === "loading" ? (
+            <div style={{ width: '80px' }}></div>
+          ) : session ? (
+            <Link href="/dashboard" className="btn-primary">Go to Dashboard</Link>
+          ) : (
+            <>
+              <Link href="/login" className="btn-secondary">Log In</Link>
+              <Link href="/login" className="btn-primary">Book a Demo</Link>
+            </>
+          )}
         </div>
       </motion.nav>
 
