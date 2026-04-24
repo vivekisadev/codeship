@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const email = session?.user?.email || body.email;
 
     if (!email) {
-      return NextResponse.json({ error: "Unauthorized. Please log into LeetSync." }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized. Please log into Codeship." }, { status: 401 });
     }
 
     const { title, titleSlug, code, language } = body;
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
     const contentEncoded = Buffer.from(markdownContent).toString("base64");
     
     const commitBody: any = {
-      message: `LeetSync: Added solution for ${title}`,
+      message: `Codeship: Added solution for ${title}`,
       content: contentEncoded,
     };
     if (sha) commitBody.sha = sha;

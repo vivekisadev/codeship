@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
 
 export const metadata: Metadata = {
-  title: "LeetSync | Auto-Push LeetCode to GitHub",
+  title: "Codeship | Auto-Push LeetCode to GitHub",
   description: "A powerful browser extension that automatically pushes your accepted LeetCode solutions directly to your GitHub repository.",
 };
 

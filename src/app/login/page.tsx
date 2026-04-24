@@ -50,7 +50,7 @@ export default function LoginPage() {
           <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
             <Code2 size={20} strokeWidth={2.5} />
           </div>
-          LeetSync
+          Codeship
         </Link>
         <ThemeToggle />
       </div>

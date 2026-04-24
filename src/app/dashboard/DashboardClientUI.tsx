@@ -65,7 +65,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
           <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
             <Code2 size={20} strokeWidth={2.5} />
           </div>
-          LeetSync
+          Codeship
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <ThemeToggle />
@@ -92,7 +92,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
               <Zap size={18} /> Problems Solved
             </div>
             <div className="display-font" style={{ fontSize: '3.5rem', fontWeight: 'bold', lineHeight: '1' }}>{problemsSolved}</div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '12px' }}>Tracked algorithms via LeetSync</div>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: '12px' }}>Tracked algorithms via Codeship</div>
           </motion.div>
 
           {/* Current Streak */}

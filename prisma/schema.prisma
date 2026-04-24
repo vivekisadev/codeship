@@ -42,7 +42,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   
-  // Custom fields for LeetSync
+  // Custom fields for Codeship
   githubPat     String?
   targetRepo    String?
   submissions   Submission[]

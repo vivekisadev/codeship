@@ -1,1 +1,1 @@
-console.log("LeetSync popup opened.");
+console.log("Codeship popup opened.");

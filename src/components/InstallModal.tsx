@@ -36,10 +36,10 @@ export function InstallModal({ isOpen, onClose }: InstallModalProps) {
               <X size={20} />
             </button>
             <h3 className="heading-lg" style={{ fontSize: '1.5rem', marginBottom: '16px', color: 'var(--text-primary)' }}>
-              How to Install LeetSync
+              How to Install Codeship
             </h3>
             <ol style={{ fontSize: '1rem', color: 'var(--text-secondary)', paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li>Your download should start automatically. Extract the <strong>leetsync-extension.zip</strong> file.</li>
+              <li>Your download should start automatically. Extract the <strong>codeship-extension.zip</strong> file.</li>
               <li>Open Chrome and navigate to <code style={{background: 'var(--background)', padding: '2px 6px', borderRadius: '4px'}}>chrome://extensions/</code></li>
               <li>Enable <strong>Developer mode</strong> in the top right corner.</li>
               <li>Click <strong>Load unpacked</strong> and select the extracted folder.</li>

@@ -44,7 +44,7 @@ export default function Home() {
           <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
             <Code2 size={20} strokeWidth={2.5} />
           </div>
-          <span>LeetSync</span>
+          <span>Codeship</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <ThemeToggle />
@@ -81,7 +81,7 @@ export default function Home() {
         </motion.p>
         
         <motion.div variants={itemVariants} style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
-          <a href="/leetsync-extension.zip" download onClick={() => setShowInstallModal(true)} className="pill-dark" style={{ padding: '14px 32px', fontSize: '1rem', border: '1px solid rgba(255,255,255,0.1)', background: 'linear-gradient(180deg, #27272a 0%, #09090b 100%)', textDecoration: 'none', color: '#fff' }}>
+          <a href="/codeship-extension.zip" download onClick={() => setShowInstallModal(true)} className="pill-dark" style={{ padding: '14px 32px', fontSize: '1rem', border: '1px solid rgba(255,255,255,0.1)', background: 'linear-gradient(180deg, #27272a 0%, #09090b 100%)', textDecoration: 'none', color: '#fff' }}>
             Install Extension
           </a>
         </motion.div>
@@ -99,7 +99,7 @@ export default function Home() {
           {/* Sidebar */}
           <div style={{ width: '220px', display: 'flex', flexDirection: 'column', gap: '16px', borderRight: '1px solid var(--border-subtle)', paddingRight: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '20px' }}>
-              <Code2 size={20} /> LeetSync
+              <Code2 size={20} /> Codeship
             </div>
             {['Dashboard', 'Submissions', 'Analytics', 'Settings'].map((item, i) => (
               <div key={i} style={{ padding: '8px 12px', borderRadius: '8px', background: i === 0 ? 'rgba(0,0,0,0.05)' : 'transparent', color: i === 0 ? '#000' : 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: i === 0 ? '600' : '400' }}>
@@ -178,7 +178,7 @@ export default function Home() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', zIndex: 2 }}>
             <div className="pill-dark" style={{ padding: '24px 32px', borderRadius: '32px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', width: '180px', margin: '0' }}>
               <Code2 size={28} />
-              <span style={{ fontSize: '1.1rem' }}>LeetSync</span>
+              <span style={{ fontSize: '1.1rem' }}>Codeship</span>
             </div>
           </div>
 
@@ -259,7 +259,7 @@ export default function Home() {
           </div>
           <div style={{ flex: 1 }}>
             <p style={{ fontSize: '1.5rem', lineHeight: '1.6', color: 'var(--text-primary)', fontWeight: '500' }}>
-              "LeetSync has been a game changer for my portfolio. Before using it, remembering to copy-paste solutions was chaotic. With LeetSync's automated GitHub pushes, I went from an empty repo to a highly active open-source profile—without adding any operational headaches."
+              "Codeship has been a game changer for my portfolio. Before using it, remembering to copy-paste solutions was chaotic. With Codeship's automated GitHub pushes, I went from an empty repo to a highly active open-source profile—without adding any operational headaches."
             </p>
           </div>
         </div>
@@ -350,7 +350,7 @@ export default function Home() {
             </p>
             <div style={{ position: 'relative', display: 'inline-block' }}>
               <div style={{ position: 'absolute', top: '-10px', left: '-10px', right: '-10px', bottom: '-10px', background: 'radial-gradient(circle, rgba(236,72,153,0.3) 0%, rgba(139,92,246,0.3) 50%, rgba(96,165,250,0.3) 100%)', filter: 'blur(20px)', zIndex: -1, borderRadius: 'var(--radius-full)' }}></div>
-              <a href="/leetsync-extension.zip" download onClick={() => setShowInstallModal(true)} className="pill-dark" style={{ padding: '12px 32px', fontSize: '1rem', border: '1px solid rgba(255,255,255,0.1)', textDecoration: 'none', color: '#fff', display: 'inline-block' }}>
+              <a href="/codeship-extension.zip" download onClick={() => setShowInstallModal(true)} className="pill-dark" style={{ padding: '12px 32px', fontSize: '1rem', border: '1px solid rgba(255,255,255,0.1)', textDecoration: 'none', color: '#fff', display: 'inline-block' }}>
                 Install Extension
               </a>
             </div>
@@ -361,7 +361,7 @@ export default function Home() {
       {/* Giant Faded Watermark */}
       <div style={{ position: 'absolute', bottom: '0', left: '0', width: '100%', overflow: 'hidden', zIndex: 0, pointerEvents: 'none', display: 'flex', justifyContent: 'center' }}>
         <div className="display-font" style={{ fontSize: '20vw', fontWeight: 'bold', color: 'rgba(0,0,0,0.02)', lineHeight: '0.8', whiteSpace: 'nowrap', userSelect: 'none' }}>
-          LeetSync
+          Codeship
         </div>
       </div>
 

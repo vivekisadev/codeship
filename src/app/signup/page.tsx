@@ -13,7 +13,7 @@ export default function SignupPage() {
         <div style={{ background: '#111827', color: '#fff', borderRadius: '8px', padding: '6px' }}>
           <Code2 size={20} strokeWidth={2.5} />
         </div>
-        LeetSync
+        Codeship
       </Link>
 
       <motion.div 
@@ -24,7 +24,7 @@ export default function SignupPage() {
       >
         <div style={{ textAlign: 'center' }}>
           <h1 className="display-font" style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '8px' }}>Create an Account</h1>
-          <p style={{ color: 'var(--text-secondary)' }}>Get started with LeetSync today.</p>
+          <p style={{ color: 'var(--text-secondary)' }}>Get started with Codeship today.</p>
         </div>
 
         <button 

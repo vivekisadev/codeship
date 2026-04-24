@@ -1,14 +1,14 @@
 // content.js is injected into LeetCode problem pages
 
-console.log("LeetSync: Content script loaded.");
+console.log("Codeship: Content script loaded.");
 
 function showToast(message, type = "syncing") {
   // Remove existing toast if any
-  const existing = document.getElementById("leetsync-toast");
+  const existing = document.getElementById("codeship-toast");
   if (existing) existing.remove();
 
   const toast = document.createElement("div");
-  toast.id = "leetsync-toast";
+  toast.id = "codeship-toast";
   toast.style.position = "fixed";
   toast.style.bottom = "32px";
   toast.style.right = "32px";
@@ -41,9 +41,9 @@ function showToast(message, type = "syncing") {
   }
 
   // Define animation if not exists
-  if (!document.getElementById("leetsync-styles")) {
+  if (!document.getElementById("codeship-styles")) {
     const style = document.createElement("style");
-    style.id = "leetsync-styles";
+    style.id = "codeship-styles";
     style.innerHTML = `@keyframes spin { 100% { transform: rotate(360deg); } }`;
     document.head.appendChild(style);
   }
@@ -89,8 +89,8 @@ window.addEventListener("message", (event) => {
   // We only accept messages from ourselves
   if (event.source !== window) return;
 
-  if (event.data.type && event.data.type === "LEETSYNC_SUBMISSION_ACCEPTED") {
-    console.log("LeetSync: Received accepted submission from page interceptor!", event.data.payload);
+  if (event.data.type && event.data.type === "CODESHIP_SUBMISSION_ACCEPTED") {
+    console.log("Codeship: Received accepted submission from page interceptor!", event.data.payload);
     
     // Show UI
     showToast("Pushing to GitHub...", "syncing");

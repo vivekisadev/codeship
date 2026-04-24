@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "LeetSync Auto-Pusher",
+  "name": "Codeship Auto-Pusher",
   "version": "1.0.0",
   "description": "Automatically pushes accepted LeetCode solutions to your GitHub repository.",
   "permissions": [

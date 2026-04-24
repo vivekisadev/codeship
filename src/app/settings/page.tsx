@@ -71,7 +71,7 @@ export default function SettingsPage() {
           <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
             <Code2 size={20} strokeWidth={2.5} />
           </div>
-          LeetSync
+          Codeship
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <ThemeToggle />
@@ -172,7 +172,7 @@ export default function SettingsPage() {
               </div>
               
               <a 
-                href="/leetsync-extension.zip" 
+                href="/codeship-extension.zip" 
                 download
                 onClick={() => setShowInstallModal(true)}
                 className="btn-primary" 
@@ -185,7 +185,7 @@ export default function SettingsPage() {
             <div style={{ padding: '16px', background: 'var(--surface-base)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)' }}>
               <h4 style={{ fontSize: '0.875rem', fontWeight: '600', marginBottom: '8px' }}>Installation Instructions:</h4>
               <ol style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <li>Download and extract the <code>leetsync-extension.zip</code> file.</li>
+                <li>Download and extract the <code>codeship-extension.zip</code> file.</li>
                 <li>Open Chrome and navigate to <code>chrome://extensions/</code></li>
                 <li>Enable <strong>Developer mode</strong> in the top right corner.</li>
                 <li>Click <strong>Load unpacked</strong> and select the extracted folder.</li>

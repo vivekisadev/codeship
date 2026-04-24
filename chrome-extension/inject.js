@@ -17,10 +17,10 @@ window.fetch = async function (...args) {
           language: body.lang,
           question_id: body.question_id,
         };
-        console.log("LeetSync: Intercepted submission payload.", lastSubmission);
+        console.log("Codeship: Intercepted submission payload.", lastSubmission);
       }
     } catch (e) {
-      console.error("LeetSync: Error parsing submission body", e);
+      console.error("Codeship: Error parsing submission body", e);
     }
   }
 
@@ -35,7 +35,7 @@ window.fetch = async function (...args) {
     clone.json().then(data => {
       // Check if it's accepted
       if (data && data.state === "SUCCESS" && data.status_msg === "Accepted") {
-        console.log("LeetSync: Submission ACCEPTED!", data);
+        console.log("Codeship: Submission ACCEPTED!", data);
         
         // Extract the problem title from the URL slug
         const match = window.location.pathname.match(/\/problems\/([^\/]+)/);
@@ -50,7 +50,7 @@ window.fetch = async function (...args) {
         };
 
         // Send a message out of the page context back to our content script
-        window.postMessage({ type: "LEETSYNC_SUBMISSION_ACCEPTED", payload: payload }, "*");
+        window.postMessage({ type: "CODESHIP_SUBMISSION_ACCEPTED", payload: payload }, "*");
         
         // Clear last submission to prevent duplicate pushes
         lastSubmission = null;
@@ -63,4 +63,4 @@ window.fetch = async function (...args) {
   return response;
 };
 
-console.log("LeetSync: Fetch interceptor injected.");
+console.log("Codeship: Fetch interceptor injected.");
