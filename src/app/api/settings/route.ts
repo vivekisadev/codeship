@@ -13,7 +13,6 @@ export async function GET(req: Request) {
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
     select: {
-      githubPat: true,
       targetRepo: true,
     }
   });
@@ -28,12 +27,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { githubPat, targetRepo } = await req.json();
+  const { targetRepo } = await req.json();
 
   const user = await prisma.user.update({
     where: { email: session.user.email },
     data: {
-      githubPat,
       targetRepo,
     }
   });

@@ -62,6 +62,7 @@ model Submission {
   title     String
   language  String
   status    String   @default("Accepted")
+  codeHash  String?
   createdAt DateTime @default(now())
   
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)

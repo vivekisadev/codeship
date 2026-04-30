@@ -109,23 +109,11 @@ export default function SettingsPage() {
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', marginBottom: '8px' }}>GitHub Personal Access Token (PAT)</label>
-                <input 
-                  type="password" 
-                  value={githubPat}
-                  onChange={(e) => setGithubPat(e.target.value)}
-                  placeholder="github_pat_11..."
-                  style={{ width: '100%', padding: '12px', background: 'var(--background)', color: 'var(--text-primary)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', outline: 'none' }} 
-                />
-                <div style={{ marginTop: '12px', padding: '16px', background: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.2)', borderRadius: 'var(--radius-md)' }}>
-                  <h4 style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--accent-primary)', marginBottom: '8px' }}>How to generate your token:</h4>
-                  <ol style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <li>Go to GitHub Developer Settings and create a <strong>Fine-grained personal access token</strong>.</li>
-                    <li>Under <strong>Repository access</strong>, choose <em>"Only select repositories"</em> and select your target repository.</li>
-                    <li>Under <strong>Repository permissions</strong>, find <em>Contents</em> and set it to <strong>"Read and write"</strong>.</li>
-                  </ol>
-                </div>
+              <div style={{ padding: '16px', background: 'rgba(16, 185, 129, 0.05)', border: '1px solid rgba(16, 185, 129, 0.2)', borderRadius: 'var(--radius-md)' }}>
+                <h4 style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--success)', marginBottom: '8px' }}>Security Upgraded</h4>
+                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                  Codeship now uses secure GitHub OAuth integration. You no longer need to manage or paste Personal Access Tokens (PAT).
+                </p>
               </div>
 
               <div>
