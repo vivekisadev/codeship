@@ -149,7 +149,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
           </div>
 
           {submissions.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '64px 24px', background: 'var(--surface-base)', borderRadius: '16px', border: '1px dashed var(--border-subtle)' }}>
+            <div style={{ textAlign: 'center', padding: '64px 24px', background: 'var(--tile-bg)', borderRadius: '16px', border: '1px dashed var(--border-subtle)' }}>
               <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' }}>
                 <Code2 size={24} color="var(--text-tertiary)" />
               </div>
@@ -164,9 +164,9 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 + (i * 0.1) }}
-                  whileHover={{ x: 4, backgroundColor: 'var(--surface-elevated)' }}
+                  whileHover={{ scale: 1.01, borderColor: 'var(--border-glow)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                   className="mockup-card" 
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'var(--surface-base)', border: '1px solid var(--border-subtle)', cursor: 'default' }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'var(--tile-bg)', border: '1px solid var(--border-subtle)', cursor: 'default' }}
                 >
                   <div>
                     <h3 style={{ fontWeight: '600', fontSize: '1.15rem', marginBottom: '6px' }}>{sub.title}</h3>

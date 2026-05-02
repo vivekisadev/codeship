@@ -21,6 +21,7 @@
   
   --mesh-bg-opacity: 1;
   --noise-opacity: 0.04;
+  --tile-bg: #ffffff;
 }
 
 [data-theme='dark'] {
@@ -41,6 +42,7 @@
   
   --mesh-bg-opacity: 0.05;
   --noise-opacity: 0.06;
+  --tile-bg: #000000;
 }
 
 * {
@@ -215,7 +217,7 @@ body {
 }
 
 .mockup-card {
-  background: var(--surface-base);
+  background: var(--tile-bg);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
