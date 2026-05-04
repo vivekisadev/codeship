@@ -164,7 +164,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 + (i * 0.1) }}
-                  whileHover={{ scale: 1.01, borderColor: 'var(--border-glow)', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  whileHover={{ scale: 1.02, translateY: -4, borderColor: 'var(--border-glow)', boxShadow: '0 30px 60px -12px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.03)' }}
                   className="mockup-card" 
                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px', background: 'var(--tile-bg)', border: '1px solid var(--border-subtle)', cursor: 'default' }}
                 >
