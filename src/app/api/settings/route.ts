@@ -14,10 +14,24 @@ export async function GET(req: Request) {
     where: { email: session.user.email },
     select: {
       targetRepo: true,
+      autoTweet: true,
+      autoLinkedIn: true,
+      accounts: {
+        select: {
+          provider: true
+        }
+      }
     }
   });
 
-  return NextResponse.json(user);
+  const twitterConnected = user?.accounts.some(a => a.provider === 'twitter') || false;
+  const linkedinConnected = user?.accounts.some(a => a.provider === 'linkedin') || false;
+
+  return NextResponse.json({
+    ...user,
+    twitterConnected,
+    linkedinConnected
+  });
 }
 
 export async function POST(req: Request) {
@@ -27,12 +41,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { targetRepo } = await req.json();
+  const { targetRepo, autoTweet, autoLinkedIn } = await req.json();
 
   const user = await prisma.user.update({
     where: { email: session.user.email },
     data: {
       targetRepo,
+      autoTweet,
+      autoLinkedIn
     }
   });
 

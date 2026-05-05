@@ -6,7 +6,8 @@ import { FaGithub } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { InstallModal } from "../../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -18,6 +19,10 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [showInstallModal, setShowInstallModal] = useState(false);
+  const [autoTweet, setAutoTweet] = useState(false);
+  const [autoLinkedIn, setAutoLinkedIn] = useState(false);
+  const [twitterConnected, setTwitterConnected] = useState(false);
+  const [linkedinConnected, setLinkedinConnected] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -27,6 +32,10 @@ export default function SettingsPage() {
           if (data) {
             setGithubPat(data.githubPat || "");
             setTargetRepo(data.targetRepo || "");
+            setAutoTweet(data.autoTweet || false);
+            setAutoLinkedIn(data.autoLinkedIn || false);
+            setTwitterConnected(data.twitterConnected || false);
+            setLinkedinConnected(data.linkedinConnected || false);
           }
         });
     }
@@ -41,7 +50,7 @@ export default function SettingsPage() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ githubPat, targetRepo })
+      body: JSON.stringify({ targetRepo, autoTweet, autoLinkedIn })
     });
     
     setSaving(false);
@@ -179,6 +188,79 @@ export default function SettingsPage() {
                 <li>Click <strong>Load unpacked</strong> and select the extracted folder.</li>
                 <li>Go to LeetCode, submit a solution, and watch the magic happen!</li>
               </ol>
+            </div>
+          </motion.div>
+
+          {/* Social Broadcasting Card */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="glass-panel" 
+            style={{ display: 'flex', flexDirection: 'column', gap: '24px', padding: '32px' }}
+          >
+            <div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '4px' }}>Social Broadcasting</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Share your algorithmic victories on X (Twitter) and LinkedIn with a dynamic code snapshot.</p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              
+              {/* Twitter Settings */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'var(--surface-base)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <FaTwitter size={24} color="#1DA1F2" />
+                  <div>
+                    <h4 style={{ fontWeight: 'bold' }}>X (Twitter)</h4>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{twitterConnected ? "Account Linked" : "Not Linked"}</p>
+                  </div>
+                </div>
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  {twitterConnected ? (
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.875rem' }}>
+                      <input type="checkbox" checked={autoTweet} onChange={(e) => setAutoTweet(e.target.checked)} style={{ width: '16px', height: '16px', cursor: 'pointer' }} />
+                      Auto-Tweet Solutions
+                    </label>
+                  ) : (
+                    <button onClick={() => signIn("twitter")} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.875rem' }}>Connect X</button>
+                  )}
+                </div>
+              </div>
+
+              {/* LinkedIn Settings */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px', background: 'var(--surface-base)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <FaLinkedin size={24} color="#0077b5" />
+                  <div>
+                    <h4 style={{ fontWeight: 'bold' }}>LinkedIn</h4>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{linkedinConnected ? "Account Linked" : "Not Linked"}</p>
+                  </div>
+                </div>
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  {linkedinConnected ? (
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.875rem' }}>
+                      <input type="checkbox" checked={autoLinkedIn} onChange={(e) => setAutoLinkedIn(e.target.checked)} style={{ width: '16px', height: '16px', cursor: 'pointer' }} />
+                      Auto-Post Solutions
+                    </label>
+                  ) : (
+                    <button onClick={() => signIn("linkedin")} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.875rem' }}>Connect LinkedIn</button>
+                  )}
+                </div>
+              </div>
+              
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+                <button 
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="pill-dark"
+                  style={{ padding: '12px 24px', display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                  {saving ? "Saving..." : saved ? "Saved!" : <><Save size={16} /> Save Changes</>}
+                </button>
+              </div>
+
             </div>
           </motion.div>
         </div>

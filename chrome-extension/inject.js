@@ -47,6 +47,8 @@ window.fetch = async function (...args) {
           titleSlug: titleSlug,
           code: lastSubmission.code,
           language: lastSubmission.language,
+          runtime: data.status_runtime || "N/A",
+          memory: data.status_memory || "N/A",
         };
 
         // Send a message out of the page context back to our content script
