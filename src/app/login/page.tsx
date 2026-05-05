@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2 } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
@@ -43,7 +43,7 @@ export default function LoginPage() {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--background)' }}>
         <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '12px', padding: '12px', animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>
-          <Code2 size={32} strokeWidth={2.5} />
+          <Logo size={32} />
         </div>
       </div>
     );
@@ -54,7 +54,7 @@ export default function LoginPage() {
       <div style={{ position: 'absolute', top: '24px', left: '24px', right: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--text-primary)' }} className="display-font">
           <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
-            <Code2 size={20} strokeWidth={2.5} />
+            <Logo size={20} />
           </div>
           Codeship
         </Link>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Settings, Link as LinkIcon, Unplug, Code2, Save } from "lucide-react";
+import { Settings, Link as LinkIcon, Unplug, Save } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { signIn, useSession } from "next-auth/react";
 import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { InstallModal } from "../../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Logo } from "@/components/Logo";
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
@@ -78,7 +79,7 @@ export default function SettingsPage() {
       <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px', borderBottom: '1px solid var(--border-subtle)' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--text-primary)' }} className="display-font">
           <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
-            <Code2 size={20} strokeWidth={2.5} />
+            <Logo size={20} />
           </div>
           Codeship
         </Link>

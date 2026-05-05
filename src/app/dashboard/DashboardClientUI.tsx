@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Settings, ExternalLink, Code2, Zap, Flame, CodeSquare, RefreshCw } from "lucide-react";
+import { Settings, ExternalLink, Zap, Flame, CodeSquare, RefreshCw } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { WelcomeToast } from "@/components/WelcomeToast";
 import { useRouter } from "next/navigation";
@@ -74,7 +75,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--text-primary)' }} className="display-font">
           <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
-            <Code2 size={20} strokeWidth={2.5} />
+            <Logo size={20} />
           </div>
           Codeship
         </Link>
@@ -151,7 +152,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
           {submissions.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '64px 24px', background: 'var(--tile-bg)', borderRadius: '16px', border: '1px dashed var(--border-subtle)' }}>
               <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' }}>
-                <Code2 size={24} color="var(--text-tertiary)" />
+                <Logo size={24} color="var(--text-tertiary)" />
               </div>
               <p style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '8px' }}>No solutions captured yet</p>
               <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>Go to LeetCode and submit a passing solution to see it sync here magically.</p>

@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { InstallModal } from "../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Logo } from "@/components/Logo";
 import { useSession } from "next-auth/react";
 
 export default function Home() {
@@ -42,7 +43,7 @@ export default function Home() {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 'bold', fontSize: '1.35rem', letterSpacing: '-0.02em', color: 'var(--text-primary)' }} className="display-font">
           <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
-            <Code2 size={20} strokeWidth={2.5} />
+            <Logo size={20} />
           </div>
           <span>Codeship</span>
         </div>
@@ -99,7 +100,7 @@ export default function Home() {
           {/* Sidebar */}
           <div style={{ width: '220px', display: 'flex', flexDirection: 'column', gap: '16px', borderRight: '1px solid var(--border-subtle)', paddingRight: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '20px' }}>
-              <Code2 size={20} /> Codeship
+              <Logo size={20} /> Codeship
             </div>
             {['Dashboard', 'Submissions', 'Analytics', 'Settings'].map((item, i) => (
               <div key={i} style={{ padding: '8px 12px', borderRadius: '8px', background: i === 0 ? 'rgba(0,0,0,0.05)' : 'transparent', color: i === 0 ? '#000' : 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: i === 0 ? '600' : '400' }}>
@@ -177,7 +178,7 @@ export default function Home() {
 
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', zIndex: 2 }}>
             <div className="pill-dark" style={{ padding: '24px 32px', borderRadius: '32px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', width: '180px', margin: '0' }}>
-              <Code2 size={28} />
+              <Logo size={28} />
               <span style={{ fontSize: '1.1rem' }}>Codeship</span>
             </div>
           </div>
@@ -313,7 +314,7 @@ export default function Home() {
                <div className="mockup-card" style={{ padding: '16px', borderRadius: '50%', width: '64px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><FaGithub size={24} /></div>
                <div className="mockup-card" style={{ padding: '16px', borderRadius: '50%', width: '64px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><FaChrome size={24} color="#10b981" /></div>
                <div className="mockup-card" style={{ padding: '16px', borderRadius: '50%', width: '64px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><SiLeetcode size={24} color="#ffa116" /></div>
-               <div className="mockup-card" style={{ padding: '16px', borderRadius: '50%', width: '64px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Code2 size={24} color="#3b82f6" /></div>
+               <div className="mockup-card" style={{ padding: '16px', borderRadius: '50%', width: '64px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Logo size={24} color="#3b82f6" /></div>
             </div>
           </motion.div>
 
@@ -360,7 +361,7 @@ export default function Home() {
 
       {/* Giant Faded Watermark */}
       <div style={{ position: 'absolute', bottom: '0', left: '0', width: '100%', overflow: 'hidden', zIndex: 0, pointerEvents: 'none', display: 'flex', justifyContent: 'center' }}>
-        <div className="display-font" style={{ fontSize: '20vw', fontWeight: 'bold', color: 'rgba(0,0,0,0.02)', lineHeight: '0.8', whiteSpace: 'nowrap', userSelect: 'none' }}>
+        <div className="display-font" style={{ fontSize: '20vw', fontWeight: 'bold', color: 'var(--text-primary)', opacity: 0.03, lineHeight: '0.8', whiteSpace: 'nowrap', userSelect: 'none' }}>
           Codeship
         </div>
       </div>
@@ -369,7 +370,7 @@ export default function Home() {
       <footer style={{ marginTop: '60px', paddingTop: '40px', borderTop: '1px solid var(--border-subtle)', position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '40px' }}>
         <div style={{ display: 'flex', gap: '16px', maxWidth: '300px' }}>
           <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px', height: 'fit-content' }}>
-            <Code2 size={24} strokeWidth={2.5} />
+            <Logo size={24} />
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', lineHeight: '1.5' }}>
             Our mission is to offer engineers a better portfolio experience.
