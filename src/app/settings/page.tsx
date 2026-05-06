@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Settings, Link as LinkIcon, Unplug, Save } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
 import { SiLeetcode } from "react-icons/si";
 import Link from "next/link";
 import { useState, useEffect } from "react";
