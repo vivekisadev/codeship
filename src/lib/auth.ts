@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.LINKEDIN_CLIENT_ID || "",
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET || "",
       authorization: { params: { scope: "openid profile email w_member_social" } },
-      issuer: "https://www.linkedin.com",
+      issuer: "https://www.linkedin.com/oauth",
       jwks_endpoint: "https://www.linkedin.com/oauth/openid/jwks",
       allowDangerousEmailAccountLinking: true,
       profile(profile, tokens) {
