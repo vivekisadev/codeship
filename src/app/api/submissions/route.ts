@@ -251,7 +251,7 @@ export async function POST(req: Request) {
               await fetch(uploadUrl, {
                 method: "PUT",
                 headers: { "Content-Type": "image/png" },
-                body: imageBuffer
+                body: imageBuffer as any
               });
 
               // 3. Update LinkedIn Body
