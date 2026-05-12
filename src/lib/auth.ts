@@ -6,8 +6,21 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import prisma from "./db"
 import type { NextAuthOptions } from "next-auth"
 
+const useSecureCookies = process.env.NODE_ENV === "production" || process.env.NEXTAUTH_URL?.startsWith("https://");
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as any,
+  cookies: {
+    sessionToken: {
+      name: useSecureCookies ? `__Secure-next-auth.session-token` : `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'none',
+        path: '/',
+        secure: true,
+      }
+    }
+  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID || "",
