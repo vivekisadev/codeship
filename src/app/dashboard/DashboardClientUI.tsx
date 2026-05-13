@@ -2,11 +2,12 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Settings, ExternalLink, Zap, Flame, CodeSquare, RefreshCw } from "lucide-react";
+import { Settings, ExternalLink, Zap, Flame, CodeSquare, RefreshCw, LogOut } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { WelcomeToast } from "@/components/WelcomeToast";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { useState } from "react";
 
 const calculateStreak = (submissions: any[]) => {
@@ -84,6 +85,9 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
           <Link href="/settings" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
             <Settings size={16} /> Settings
           </Link>
+          <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
+            <LogOut size={16} /> Logout
+          </button>
         </div>
       </motion.div>
 

@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Settings, Link as LinkIcon, Unplug, Save } from "lucide-react";
+import { Settings, Link as LinkIcon, Unplug, Save, LogOut } from "lucide-react";
 import { SiLeetcode } from "react-icons/si";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { InstallModal } from "../../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -87,6 +87,9 @@ export default function SettingsPage() {
           <Link href="/dashboard" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
             Dashboard
           </Link>
+          <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
+            <LogOut size={16} /> Logout
+          </button>
           <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--text-primary)', overflow: 'hidden' }}>
             {session?.user?.image && <img src={session.user.image} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
           </div>
