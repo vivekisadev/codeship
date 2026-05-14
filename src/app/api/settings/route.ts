@@ -54,3 +54,43 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ success: true, user });
 }
+
+export async function DELETE(req: Request) {
+  const session = await getServerSession(authOptions);
+  
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { searchParams } = new URL(req.url);
+  const provider = searchParams.get('provider');
+
+  if (!provider) {
+    return NextResponse.json({ error: "Provider is required" }, { status: 400 });
+  }
+
+  try {
+    await prisma.account.deleteMany({
+      where: {
+        userId: (session.user as any).id,
+        provider: provider
+      }
+    });
+
+    if (provider === 'twitter') {
+      await prisma.user.update({
+        where: { id: (session.user as any).id },
+        data: { autoTweet: false }
+      });
+    } else if (provider === 'linkedin') {
+      await prisma.user.update({
+        where: { id: (session.user as any).id },
+        data: { autoLinkedIn: false }
+      });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to disconnect" }, { status: 500 });
+  }
+}

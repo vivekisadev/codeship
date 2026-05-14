@@ -58,6 +58,20 @@ export default function SettingsPage() {
     setTimeout(() => setSaved(false), 3000);
   };
 
+  const handleDisconnect = async (provider: string) => {
+    if (!confirm(`Are you sure you want to disconnect ${provider}?`)) return;
+    
+    await fetch(`/api/settings?provider=${provider}`, { method: 'DELETE' });
+    
+    if (provider === 'twitter') {
+      setTwitterConnected(false);
+      setAutoTweet(false);
+    } else if (provider === 'linkedin') {
+      setLinkedinConnected(false);
+      setAutoLinkedIn(false);
+    }
+  };
+
   if (status === "loading") return <div style={{ minHeight: '100vh', background: 'var(--background)' }}></div>;
 
   if (status === "unauthenticated") {
@@ -221,10 +235,13 @@ export default function SettingsPage() {
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   {twitterConnected ? (
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.875rem' }}>
-                      <input type="checkbox" checked={autoTweet} onChange={(e) => setAutoTweet(e.target.checked)} style={{ width: '16px', height: '16px', cursor: 'pointer' }} />
-                      Auto-Tweet Solutions
-                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.875rem' }}>
+                        <input type="checkbox" checked={autoTweet} onChange={(e) => setAutoTweet(e.target.checked)} style={{ width: '16px', height: '16px', cursor: 'pointer' }} />
+                        Auto-Tweet Solutions
+                      </label>
+                      <button onClick={() => handleDisconnect('twitter')} className="btn-secondary" style={{ padding: '6px 12px', fontSize: '0.75rem', color: '#ef4444', borderColor: '#ef4444' }}>Disconnect</button>
+                    </div>
                   ) : (
                     <button onClick={() => signIn("twitter")} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.875rem' }}>Connect X</button>
                   )}
@@ -243,10 +260,13 @@ export default function SettingsPage() {
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   {linkedinConnected ? (
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.875rem' }}>
-                      <input type="checkbox" checked={autoLinkedIn} onChange={(e) => setAutoLinkedIn(e.target.checked)} style={{ width: '16px', height: '16px', cursor: 'pointer' }} />
-                      Auto-Post Solutions
-                    </label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.875rem' }}>
+                        <input type="checkbox" checked={autoLinkedIn} onChange={(e) => setAutoLinkedIn(e.target.checked)} style={{ width: '16px', height: '16px', cursor: 'pointer' }} />
+                        Auto-Post Solutions
+                      </label>
+                      <button onClick={() => handleDisconnect('linkedin')} className="btn-secondary" style={{ padding: '6px 12px', fontSize: '0.75rem', color: '#ef4444', borderColor: '#ef4444' }}>Disconnect</button>
+                    </div>
                   ) : (
                     <button onClick={() => signIn("linkedin")} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.875rem' }}>Connect LinkedIn</button>
                   )}
