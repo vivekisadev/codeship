@@ -30,9 +30,10 @@ const getExtension = (lang: string) => {
 
 // Push a file to GitHub, resolving SHA if it exists
 async function pushToGitHub(repo: string, token: string, path: string, content: string, message: string) {
-  const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+  const cleanRepo = repo.replace('https://github.com/', '').replace('http://github.com/', '').replace(/\/$/, '').trim();
+  const url = `https://api.github.com/repos/${cleanRepo}/contents/${path}`;
   const getRes = await fetch(url, {
-    headers: { Authorization: `token ${token}`, Accept: "application/vnd.github.v3+json" },
+    headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github.v3+json", "User-Agent": "Codeship-App" },
   });
   
   let sha = undefined;
@@ -44,9 +45,10 @@ async function pushToGitHub(repo: string, token: string, path: string, content: 
   const putRes = await fetch(url, {
     method: "PUT",
     headers: {
-      Authorization: `token ${token}`,
+      Authorization: `Bearer ${token}`,
       Accept: "application/vnd.github.v3+json",
       "Content-Type": "application/json",
+      "User-Agent": "Codeship-App"
     },
     body: JSON.stringify({
       message,
@@ -54,6 +56,11 @@ async function pushToGitHub(repo: string, token: string, path: string, content: 
       sha
     }),
   });
+
+  if (!putRes.ok) {
+    const errorBody = await putRes.text();
+    console.error(`Codeship GitHub Push Error [${putRes.status}] to ${cleanRepo}:`, errorBody);
+  }
 
   return putRes.ok;
 }
@@ -135,7 +142,11 @@ export async function POST(req: Request) {
     // 1. Push Code File
     const ext = getExtension(language);
     const codePath = `problems/${titleSlug}/solution.${ext}`;
-    await pushToGitHub(user.targetRepo, githubToken, codePath, code, `Codeship: Added solution for ${title}`);
+    const pushSuccess = await pushToGitHub(user.targetRepo, githubToken, codePath, code, `Codeship: Added solution for ${title}`);
+
+    if (!pushSuccess) {
+      return NextResponse.json({ error: "Failed to push to GitHub. Verify your target repo exists and Codeship has access." }, { status: 400 });
+    }
 
     // 2. Push Problem README
     if (problemContent) {

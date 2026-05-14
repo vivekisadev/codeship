@@ -52,6 +52,28 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    signIn: async ({ account }) => {
+      if (account) {
+        try {
+          await prisma.account.update({
+            where: {
+              provider_providerAccountId: {
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+              },
+            },
+            data: {
+              access_token: account.access_token,
+              refresh_token: account.refresh_token,
+              expires_at: account.expires_at,
+            },
+          });
+        } catch (e) {
+          // Account doesn't exist yet, it will be created automatically
+        }
+      }
+      return true;
+    },
     session: async ({ session, user }) => {
       if (session?.user) {
         (session.user as any).id = user.id;
