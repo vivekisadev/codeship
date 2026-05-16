@@ -236,8 +236,11 @@ export default function SettingsPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   {twitterConnected ? (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.875rem' }}>
-                        <input type="checkbox" checked={autoTweet} onChange={(e) => setAutoTweet(e.target.checked)} style={{ width: '16px', height: '16px', cursor: 'pointer' }} />
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', fontSize: '0.875rem' }}>
+                        <div className="switch">
+                          <input type="checkbox" checked={autoTweet} onChange={(e) => setAutoTweet(e.target.checked)} />
+                          <span className="slider round"></span>
+                        </div>
                         Auto-Tweet Solutions
                       </label>
                       <button onClick={() => handleDisconnect('twitter')} className="btn-secondary" style={{ padding: '6px 12px', fontSize: '0.75rem', color: '#ef4444', borderColor: '#ef4444' }}>Disconnect</button>
@@ -261,8 +264,11 @@ export default function SettingsPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   {linkedinConnected ? (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.875rem' }}>
-                        <input type="checkbox" checked={autoLinkedIn} onChange={(e) => setAutoLinkedIn(e.target.checked)} style={{ width: '16px', height: '16px', cursor: 'pointer' }} />
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', fontSize: '0.875rem' }}>
+                        <div className="switch">
+                          <input type="checkbox" checked={autoLinkedIn} onChange={(e) => setAutoLinkedIn(e.target.checked)} />
+                          <span className="slider round"></span>
+                        </div>
                         Auto-Post Solutions
                       </label>
                       <button onClick={() => handleDisconnect('linkedin')} className="btn-secondary" style={{ padding: '6px 12px', fontSize: '0.75rem', color: '#ef4444', borderColor: '#ef4444' }}>Disconnect</button>
