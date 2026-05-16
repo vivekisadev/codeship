@@ -208,8 +208,16 @@ export async function POST(req: Request) {
           accessToken: twitterAccount.oauth_token,
           accessSecret: twitterAccount.oauth_token_secret,
         });
+        let mediaId: string | undefined;
         if (imageBuffer && imageBuffer.length > 0) {
-          const mediaId = await client.v1.uploadMedia(imageBuffer, { mimeType: 'image/png' });
+          try {
+            mediaId = await client.v1.uploadMedia(imageBuffer, { mimeType: 'image/png' });
+          } catch (mediaError) {
+            console.error("Twitter Media Upload Error (falling back to text only):", mediaError);
+          }
+        }
+        
+        if (mediaId) {
           await client.v2.tweet({ text: postText, media: { media_ids: [mediaId] } });
         } else {
           await client.v2.tweet(postText);
