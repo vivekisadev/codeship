@@ -58,10 +58,11 @@ export async function POST(req: Request) {
 export async function DELETE(req: Request) {
   const session = await getServerSession(authOptions);
   
-  if (!(session?.user as any)?.id) {
+  if (!session || !session.user || !(session.user as any).id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const userId = (session.user as any).id;
   const { searchParams } = new URL(req.url);
   const provider = searchParams.get('provider');
 
@@ -72,19 +73,19 @@ export async function DELETE(req: Request) {
   try {
     await prisma.account.deleteMany({
       where: {
-        userId: (session.user as any).id,
+        userId: userId,
         provider: provider
       }
     });
 
     if (provider === 'twitter') {
       await prisma.user.update({
-        where: { id: (session.user as any).id },
+        where: { id: userId },
         data: { autoTweet: false }
       });
     } else if (provider === 'linkedin') {
       await prisma.user.update({
-        where: { id: (session.user as any).id },
+        where: { id: userId },
         data: { autoLinkedIn: false }
       });
     }
