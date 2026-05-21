@@ -186,7 +186,19 @@ export async function POST(req: Request) {
 
     // 5. Social Broadcasting
     const origin = new URL(req.url).origin;
-    const postText = `I just successfully solved "${title}" on LeetCode! 🚀\n\nI tackled this problem using ${language}, focusing on writing clean and optimized code.\n\n⏱️ Runtime: ${runtime || 'N/A'}\n💾 Memory: ${memory || 'N/A'}\n\nYou can check out my complete solution on my GitHub:\n🔗 https://github.com/${user.targetRepo}/blob/main/${codePath}\n\n#LeetCode #SoftwareEngineering #ProblemSolving #Coding #Codeship`;
+    
+    // Multiple writing styles to keep the timeline fresh and authentic
+    const postTemplates = [
+      `I just successfully solved "${title}" on LeetCode! 🚀\n\nI tackled this problem using ${language}, focusing on writing clean and optimized code.\n\n⏱️ Runtime: ${runtime || 'N/A'}\n💾 Memory: ${memory || 'N/A'}\n\nYou can check out my complete solution on my GitHub:\n🔗 https://github.com/${user.targetRepo}/blob/main/${codePath}\n\n#LeetCode #SoftwareEngineering #ProblemSolving #Coding #Codeship`,
+      
+      `Another algorithm down! Just wrapped up "${title}" on LeetCode. 🧠💻\n\nBuilt the solution in ${language}. Always satisfying to see the test cases pass!\n\n⏱️ Speed: ${runtime || 'N/A'}\n💾 Memory usage: ${memory || 'N/A'}\n\nFull code is available here:\n🔗 https://github.com/${user.targetRepo}/blob/main/${codePath}\n\n#LeetCode #SoftwareDeveloper #CodingJourney #Algorithms`,
+      
+      `Happy to share that I just cracked the "${title}" problem! 🎉\n\nIt was a great exercise in problem-solving. Here are the stats for my ${language} implementation:\n\n⚡ Runtime: ${runtime || 'N/A'}\n🧠 Memory: ${memory || 'N/A'}\n\nCheck out the repo for my approach:\n🔗 https://github.com/${user.targetRepo}/blob/main/${codePath}\n\n#Coding #Tech #Programming #LeetCode #CodeShip`,
+      
+      `Just pushed a new solution to my algorithms repo! 🚀\n\nProblem: ${title}\nLanguage: ${language}\n\nPerformance metrics:\n⏱️ ${runtime || 'N/A'}\n💾 ${memory || 'N/A'}\n\nYou can review the source code on my GitHub:\n🔗 https://github.com/${user.targetRepo}/blob/main/${codePath}\n\n#LeetCode #Engineering #Developer #OpenSource`
+    ];
+
+    const postText = postTemplates[Math.floor(Math.random() * postTemplates.length)];
 
     let imageBuffer: Buffer | null = null;
     try {
