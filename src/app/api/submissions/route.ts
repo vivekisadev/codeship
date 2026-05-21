@@ -74,7 +74,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized. Please log into Codeship." }, { status: 401 });
     }
 
-    const { title, titleSlug, code, language, runtime, memory } = body;
+    const { title, titleSlug, code, language, runtime, memory, linkedInStyle } = body;
 
     if (!title || !code || !language || !titleSlug) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -198,7 +198,12 @@ export async function POST(req: Request) {
       `Just pushed a new solution to my algorithms repo! 🚀\n\nProblem: ${title}\nLanguage: ${language}\n\nPerformance metrics:\n⏱️ ${runtime || 'N/A'}\n💾 ${memory || 'N/A'}\n\nYou can review the source code on my GitHub:\n🔗 https://github.com/${user.targetRepo}/blob/main/${codePath}\n\n#LeetCode #Engineering #Developer #OpenSource`
     ];
 
-    const postText = postTemplates[Math.floor(Math.random() * postTemplates.length)];
+    let postText = "";
+    if (linkedInStyle && linkedInStyle !== "random" && !isNaN(parseInt(linkedInStyle))) {
+      postText = postTemplates[parseInt(linkedInStyle) % postTemplates.length];
+    } else {
+      postText = postTemplates[Math.floor(Math.random() * postTemplates.length)];
+    }
 
     let imageBuffer: Buffer | null = null;
     try {

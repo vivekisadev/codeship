@@ -77,25 +77,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "PUSH_TO_GITHUB") {
     console.log("Codeship Background: Pushing to backend API...", message.payload);
     
-    fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(message.payload)
-    })
-    .then(res => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      console.log("Codeship Background: Push Response", data);
-      sendResponse({ success: data.success, data: data });
-    })
-    .catch(err => {
-      console.error("Codeship Background: Push Failed", err);
-      // Fallback to queue
-      enqueueSubmission(message.payload);
-      sendResponse({ success: false, error: err.toString(), queued: true });
+    chrome.storage.local.get(["linkedInStyle"], (data) => {
+      const finalPayload = { 
+        ...message.payload, 
+        linkedInStyle: data.linkedInStyle || "random" 
+      };
+      
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(finalPayload)
+      })
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        console.log("Codeship Background: Push Response", data);
+        sendResponse({ success: data.success, data: data });
+      })
+      .catch(err => {
+        console.error("Codeship Background: Push Failed", err);
+        enqueueSubmission(finalPayload);
+        sendResponse({ success: false, error: err.toString(), queued: true });
+      });
     });
 
     return true; // Keep channel open
