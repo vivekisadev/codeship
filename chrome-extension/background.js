@@ -73,36 +73,90 @@ async function enqueueSubmission(payload) {
   chrome.alarms.create(ALARM_NAME, { delayInMinutes: 1 });
 }
 
+let creating; // A global promise to avoid concurrent creates
+async function setupOffscreenDocument(path) {
+  const offscreenUrl = chrome.runtime.getURL(path);
+  const existingContexts = await chrome.runtime.getContexts({
+    contextTypes: ['OFFSCREEN_DOCUMENT'],
+    documentUrls: [offscreenUrl]
+  });
+
+  if (existingContexts.length > 0) {
+    return;
+  }
+
+  if (creating) {
+    await creating;
+  } else {
+    creating = chrome.offscreen.createDocument({
+      url: path,
+      reasons: ['DOM_PARSER'],
+      justification: 'Generate code snapshot image with html2canvas'
+    });
+    await creating;
+    creating = null;
+  }
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "PUSH_TO_GITHUB") {
     console.log("Codeship Background: Pushing to backend API...", message.payload);
     
-    chrome.storage.local.get(["linkedInStyle"], (data) => {
-      const finalPayload = { 
-        ...message.payload, 
-        linkedInStyle: data.linkedInStyle || "random" 
-      };
-      
-      fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(finalPayload)
-      })
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
-        console.log("Codeship Background: Push Response", data);
-        sendResponse({ success: data.success, data: data });
-      })
-      .catch(err => {
-        console.error("Codeship Background: Push Failed", err);
-        enqueueSubmission(finalPayload);
-        sendResponse({ success: false, error: err.toString(), queued: true });
+    // Process image generation in background async function
+    (async () => {
+      let base64Image = null;
+      try {
+        await setupOffscreenDocument('offscreen.html');
+        const response = await chrome.runtime.sendMessage({
+          target: 'offscreen',
+          type: 'GENERATE_IMAGE',
+          data: {
+            code: message.payload.code,
+            language: message.payload.language,
+            title: message.payload.title
+          }
+        });
+        if (response && response.success) {
+          base64Image = response.dataUrl;
+          console.log("Codeship Background: Generated offscreen image successfully");
+        } else {
+          console.error("Codeship Background: Offscreen generation failed", response?.error);
+        }
+      } catch (err) {
+        console.error("Codeship Background: Failed to setup offscreen or generate image", err);
+      }
+
+      chrome.storage.local.get(["linkedInStyle"], (data) => {
+        const finalPayload = { 
+          ...message.payload, 
+          linkedInStyle: data.linkedInStyle || "random" 
+        };
+        
+        if (base64Image) {
+          finalPayload.base64Image = base64Image;
+        }
+        
+        fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(finalPayload)
+        })
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then(data => {
+          console.log("Codeship Background: Push Response", data);
+          sendResponse({ success: data.success, data: data });
+        })
+        .catch(err => {
+          console.error("Codeship Background: Push Failed", err);
+          enqueueSubmission(finalPayload);
+          sendResponse({ success: false, error: err.toString(), queued: true });
+        });
       });
-    });
+    })();
 
     return true; // Keep channel open
   }

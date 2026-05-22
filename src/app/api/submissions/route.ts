@@ -74,7 +74,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized. Please log into Codeship." }, { status: 401 });
     }
 
-    const { title, titleSlug, code, language, runtime, memory, linkedInStyle } = body;
+    const { title, titleSlug, code, language, runtime, memory, linkedInStyle, base64Image } = body;
 
     if (!title || !code || !language || !titleSlug) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -207,12 +207,25 @@ export async function POST(req: Request) {
 
     let imageBuffer: Buffer | null = null;
     try {
-      const imgRes = await fetch(`${origin}/api/og?code=${encodeURIComponent(code)}&lang=${language}&title=${encodeURIComponent(title)}`);
-      if (imgRes.ok) {
-        imageBuffer = Buffer.from(await imgRes.arrayBuffer());
+      if (base64Image) {
+        const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, "");
+        imageBuffer = Buffer.from(base64Data, 'base64');
+        console.log("Codeship: Using base64Image provided by the extension");
+      } else {
+        const ogUrl = new URL(`${origin}/api/og`);
+        ogUrl.searchParams.set("title", title);
+        ogUrl.searchParams.set("lang", language);
+        ogUrl.searchParams.set("code", code);
+
+        const ogRes = await fetch(ogUrl.toString());
+        if (!ogRes.ok) {
+          throw new Error("Failed to generate OG image for LinkedIn");
+        }
+        const arrayBuffer = await ogRes.arrayBuffer();
+        imageBuffer = Buffer.from(arrayBuffer);
       }
-    } catch (e) {
-      console.error("Failed to generate OG image", e);
+    } catch (e: any) {
+      console.error("Error generating LinkedIn image:", e);
     }
 
 
