@@ -14,7 +14,6 @@ export async function GET(req: Request) {
     where: { email: session.user.email },
     select: {
       targetRepo: true,
-      targetRepo: true,
       autoLinkedIn: true,
       accounts: {
         select: {
