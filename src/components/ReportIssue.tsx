@@ -66,11 +66,11 @@ export function ReportIssue() {
             }}
           >
             <motion.div
-              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              initial={{ opacity: 0, y: 30, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-[var(--surface-base)] border border-[var(--border-subtle)] w-full max-w-md p-6 rounded-[var(--radius-lg)] shadow-2xl"
+              exit={{ opacity: 0, y: 15, scale: 0.98 }}
+              transition={{ type: "spring", damping: 30, stiffness: 350 }}
+              className="bg-[var(--surface-base)] border border-[var(--border-subtle)] w-full max-w-md p-6 rounded-[var(--radius-lg)] shadow-[0_12px_40px_-10px_rgba(0,0,0,0.1)]"
             >
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold font-space">Report an Issue</h2>
@@ -119,7 +119,7 @@ export function ReportIssue() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="mt-2 flex items-center justify-center gap-2 w-full py-3 px-4 rounded-lg bg-[var(--text-primary)] text-[var(--background)] font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                  className="mt-4 flex items-center justify-center gap-2 w-full py-3 px-4 rounded-[var(--radius-full)] bg-[var(--text-primary)] text-[var(--background)] font-medium hover:opacity-90 transition-all disabled:opacity-50 hover:shadow-lg"
                 >
                   {isSubmitting ? "Submitting..." : (
                     <>

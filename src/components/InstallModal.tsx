@@ -18,15 +18,16 @@ export function InstallModal({ isOpen, onClose }: InstallModalProps) {
           zIndex: 9999, background: 'rgba(0,0,0,0.5)'
         }}>
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.98, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: 10 }}
+            transition={{ type: "spring", damping: 30, stiffness: 350 }}
             className="glass-panel"
             style={{ 
               background: 'var(--surface-base)', padding: '32px', 
               borderRadius: '16px', maxWidth: '500px', width: '100%', 
               position: 'relative',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+              boxShadow: '0 12px 40px -10px rgba(0,0,0,0.1)'
             }}
           >
             <button 

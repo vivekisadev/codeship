@@ -6,13 +6,15 @@
     body {
       width: 280px;
       padding: 24px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: #0a0a0a;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(145deg, #09090b 0%, #000000 100%);
       color: #ededed;
       margin: 0;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.04);
       border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
     .header {
       display: flex;
@@ -21,23 +23,24 @@
       margin-bottom: 8px;
     }
     .icon {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
       padding: 8px;
       border-radius: 10px;
       display: flex;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
     h1 {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       margin: 0;
       color: #ffffff;
       font-weight: 500;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
     }
     p {
       font-size: 0.85rem;
       color: #a1a1aa;
-      line-height: 1.6;
+      line-height: 1.5;
       margin: 0 0 24px 0;
     }
     .status {
@@ -48,14 +51,14 @@
       color: #a1a1aa;
       margin-bottom: 20px;
       font-weight: 500;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
     }
     .status-dot {
       width: 6px;
       height: 6px;
       background: #10b981;
       border-radius: 50%;
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
     }
     .btn {
       display: flex;
@@ -63,7 +66,7 @@
       align-items: center;
       width: 100%;
       padding: 10px;
-      background: #ededed;
+      background: rgba(255, 255, 255, 0.9);
       color: #0a0a0a;
       border: 1px solid transparent;
       border-radius: 8px;
@@ -72,11 +75,29 @@
       font-size: 0.85rem;
       text-decoration: none;
       box-sizing: border-box;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn:hover {
       background: #ffffff;
       transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .input-field {
+      padding: 10px; 
+      border-radius: 8px; 
+      background: rgba(255,255,255,0.03); 
+      color: white; 
+      border: 1px solid rgba(255,255,255,0.06); 
+      font-size: 0.8rem; 
+      font-family: inherit;
+      width: 100%;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+    .input-field:focus {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.05);
     }
   </style>
 </head>
@@ -99,7 +120,7 @@
   <p>Your accepted solutions are automatically captured and synced to your GitHub repository in the background.</p>
   <div style="margin-bottom: 24px;">
     <label for="postStyle" style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 8px; font-weight: 500;">LinkedIn Post Style:</label>
-    <select id="postStyle" style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #ededed; border: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.85rem; cursor: pointer; outline: none; box-sizing: border-box; font-family: inherit;">
+    <select id="postStyle" class="input-field" style="cursor: pointer;">
       <option value="random" style="background: #1a1a1a; color: #ededed;">Random Rotation (Default)</option>
       <option value="0" style="background: #1a1a1a; color: #ededed;">Clean & Professional</option>
       <option value="1" style="background: #1a1a1a; color: #ededed;">Enthusiastic Hacker</option>
@@ -108,17 +129,17 @@
     </select>
   </div>
   
-  <a href="https://codeship-bay.vercel.app/dashboard" target="_blank" class="btn" style="margin-bottom: 12px;">View Dashboard</a>
+  <a href="https://codeship-bay.vercel.app/dashboard" target="_blank" class="btn" style="margin-bottom: 12px; background: rgba(255,255,255,0.05); color: #ededed; border: 1px solid rgba(255,255,255,0.1);">View Dashboard</a>
   
   <button id="toggleReportBtn" class="btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #ededed; margin-bottom: 12px;">Report Issue</button>
   
   <div id="reportFormContainer" style="display: none; flex-direction: column; gap: 8px;">
-    <select id="reportType" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem;">
-      <option value="bug">Bug</option>
-      <option value="feedback">Feedback</option>
+    <select id="reportType" class="input-field">
+      <option value="bug" style="background: #1a1a1a; color: #ededed;">Bug</option>
+      <option value="feedback" style="background: #1a1a1a; color: #ededed;">Feedback</option>
     </select>
-    <textarea id="reportDesc" placeholder="Description (Optional)" style="padding: 8px; border-radius: 6px; background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; resize: none; min-height: 60px; font-family: inherit;"></textarea>
-    <button id="submitReportBtn" class="btn" style="background: #10b981; color: white;">Submit with Logs</button>
+    <textarea id="reportDesc" class="input-field" placeholder="Description (Optional)" style="resize: none; min-height: 60px;"></textarea>
+    <button id="submitReportBtn" class="btn" style="background: rgba(16,185,129,0.9); color: white;">Submit with Logs</button>
     <div id="reportStatus" style="font-size: 0.75rem; text-align: center; margin-top: 4px; color: #10b981;"></div>
   </div>
 
