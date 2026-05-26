@@ -99,6 +99,68 @@
       border-color: rgba(255,255,255,0.2);
       background: rgba(255,255,255,0.05);
     }
+    
+    /* Shadcn / ForgeUI Style Notification Panel */
+    .style-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+    .style-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .style-option:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    .style-option.active {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .style-icon {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      transition: all 0.2s;
+    }
+    .style-option.active .style-icon {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    .style-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .style-title {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #ededed;
+    }
+    .style-desc {
+      font-size: 0.7rem;
+      color: #a1a1aa;
+    }
+    .style-check {
+      opacity: 0;
+      color: #10b981;
+      transform: scale(0.8);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .style-option.active .style-check {
+      opacity: 1;
+      transform: scale(1);
+    }
   </style>
 </head>
 <body>
@@ -118,15 +180,63 @@
   </div>
 
   <p>Your accepted solutions are automatically captured and synced to your GitHub repository in the background.</p>
-  <div style="margin-bottom: 24px;">
-    <label for="postStyle" style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 8px; font-weight: 500;">LinkedIn Post Style:</label>
-    <select id="postStyle" class="input-field" style="cursor: pointer;">
-      <option value="random" style="background: #1a1a1a; color: #ededed;">Random Rotation (Default)</option>
-      <option value="0" style="background: #1a1a1a; color: #ededed;">Clean & Professional</option>
-      <option value="1" style="background: #1a1a1a; color: #ededed;">Enthusiastic Hacker</option>
-      <option value="2" style="background: #1a1a1a; color: #ededed;">Goal Celebration</option>
-      <option value="3" style="background: #1a1a1a; color: #ededed;">Brief & Direct</option>
-    </select>
+  <div class="style-panel">
+    <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 4px; font-weight: 500;">LinkedIn Post Style:</label>
+    
+    <div class="style-option" data-value="random">
+      <div class="style-icon">🎲</div>
+      <div class="style-text">
+        <div class="style-title">Random Rotation</div>
+        <div class="style-desc">Keeps it fresh (Default)</div>
+      </div>
+      <div class="style-check">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+    </div>
+    
+    <div class="style-option" data-value="0">
+      <div class="style-icon">💼</div>
+      <div class="style-text">
+        <div class="style-title">Professional</div>
+        <div class="style-desc">Clean and formal</div>
+      </div>
+      <div class="style-check">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+    </div>
+    
+    <div class="style-option" data-value="1">
+      <div class="style-icon">🚀</div>
+      <div class="style-text">
+        <div class="style-title">Enthusiastic</div>
+        <div class="style-desc">Hype and energetic</div>
+      </div>
+      <div class="style-check">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+    </div>
+
+    <div class="style-option" data-value="2">
+      <div class="style-icon">🎯</div>
+      <div class="style-text">
+        <div class="style-title">Goal-Oriented</div>
+        <div class="style-desc">Focuses on milestones</div>
+      </div>
+      <div class="style-check">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+    </div>
+
+    <div class="style-option" data-value="3">
+      <div class="style-icon">⚡</div>
+      <div class="style-text">
+        <div class="style-title">Brief & Direct</div>
+        <div class="style-desc">Short and punchy</div>
+      </div>
+      <div class="style-check">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+    </div>
   </div>
   
   <a href="https://codeship-bay.vercel.app/dashboard" target="_blank" class="btn" style="margin-bottom: 12px; background: rgba(255,255,255,0.05); color: #ededed; border: 1px solid rgba(255,255,255,0.1);">View Dashboard</a>

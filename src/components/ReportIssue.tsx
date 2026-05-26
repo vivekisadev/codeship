@@ -46,9 +46,25 @@ export function ReportIssue() {
   return (
     <>
       <motion.button
-        className="fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg shadow-black/10 flex items-center justify-center bg-[var(--surface-elevated)] border border-[var(--border-glow)] text-[var(--text-primary)] hover:scale-105 transition-transform"
+        style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          zIndex: 50,
+          padding: '16px',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'var(--surface-elevated)',
+          border: '1px solid var(--border-glow)',
+          color: 'var(--text-primary)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+          cursor: 'pointer',
+          backdropFilter: 'blur(10px)',
+        }}
         onClick={() => setIsOpen(true)}
-        whileHover={{ y: -2 }}
+        whileHover={{ scale: 1.05, y: -2 }}
         whileTap={{ scale: 0.95 }}
       >
         <MessageSquarePlus size={24} />
@@ -60,7 +76,17 @@ export function ReportIssue() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+            style={{
+              position: 'fixed',
+              top: 0, left: 0, right: 0, bottom: 0,
+              zIndex: 50,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'rgba(0, 0, 0, 0.5)',
+              backdropFilter: 'blur(6px)',
+              padding: '16px'
+            }}
             onClick={(e) => {
               if (e.target === e.currentTarget) setIsOpen(false);
             }}
@@ -70,25 +96,51 @@ export function ReportIssue() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 15, scale: 0.98 }}
               transition={{ type: "spring", damping: 30, stiffness: 350 }}
-              className="bg-[var(--surface-base)] border border-[var(--border-subtle)] w-full max-w-md p-6 rounded-[var(--radius-lg)] shadow-[0_12px_40px_-10px_rgba(0,0,0,0.1)]"
+              style={{
+                background: 'var(--surface-base)',
+                border: '1px solid var(--border-subtle)',
+                width: '100%',
+                maxWidth: '450px',
+                padding: '32px',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: '0 12px 40px -10px rgba(0,0,0,0.3)'
+              }}
             >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold font-space">Report an Issue</h2>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <h2 className="display-font" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Report an Issue</h2>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
                 >
-                  <X size={20} />
+                  <X size={24} />
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-[var(--text-secondary)]">Issue Type</label>
+                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-secondary)' }}>Issue Type</label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value)}
-                    className="w-full p-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-elevated)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-secondary)] transition-colors"
+                    style={{
+                      width: '100%',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      border: '1px solid var(--border-subtle)',
+                      background: 'var(--surface-elevated)',
+                      color: 'var(--text-primary)',
+                      fontSize: '1rem',
+                      outline: 'none',
+                      appearance: 'none',
+                    }}
                   >
                     <option value="bug">Bug Report</option>
                     <option value="feedback">Feature Request / Feedback</option>
@@ -96,22 +148,42 @@ export function ReportIssue() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-[var(--text-secondary)]">Description (Optional)</label>
+                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-secondary)' }}>Description (Optional)</label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full p-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-elevated)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-secondary)] transition-colors min-h-[100px] resize-none"
+                    style={{
+                      width: '100%',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      border: '1px solid var(--border-subtle)',
+                      background: 'var(--surface-elevated)',
+                      color: 'var(--text-primary)',
+                      fontSize: '1rem',
+                      minHeight: '120px',
+                      resize: 'none',
+                      outline: 'none',
+                    }}
                     placeholder="Tell us what happened..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1 text-[var(--text-secondary)]">Email (Optional)</label>
+                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-secondary)' }}>Email (Optional)</label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-elevated)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-secondary)] transition-colors"
+                    style={{
+                      width: '100%',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      border: '1px solid var(--border-subtle)',
+                      background: 'var(--surface-elevated)',
+                      color: 'var(--text-primary)',
+                      fontSize: '1rem',
+                      outline: 'none',
+                    }}
                     placeholder="your@email.com"
                   />
                 </div>
@@ -119,7 +191,20 @@ export function ReportIssue() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="mt-4 flex items-center justify-center gap-2 w-full py-3 px-4 rounded-[var(--radius-full)] bg-[var(--text-primary)] text-[var(--background)] font-medium hover:opacity-90 transition-all disabled:opacity-50 hover:shadow-lg"
+                  className="btn-primary"
+                  style={{
+                    marginTop: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    width: '100%',
+                    padding: '14px 24px',
+                    opacity: isSubmitting ? 0.7 : 1,
+                    pointerEvents: isSubmitting ? 'none' : 'auto',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
                 >
                   {isSubmitting ? "Submitting..." : (
                     <>

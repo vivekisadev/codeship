@@ -1,15 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const select = document.getElementById('postStyle');
+  const styleOptions = document.querySelectorAll('.style-option');
   
-  if (select) {
+  if (styleOptions.length > 0) {
+    const updateActiveStyle = (val) => {
+      styleOptions.forEach(opt => {
+        if (opt.getAttribute('data-value') === val) {
+          opt.classList.add('active');
+        } else {
+          opt.classList.remove('active');
+        }
+      });
+    };
+
     chrome.storage.local.get(['linkedInStyle'], (result) => {
-      if (result.linkedInStyle !== undefined) {
-        select.value = result.linkedInStyle;
-      }
+      updateActiveStyle(result.linkedInStyle || 'random');
     });
 
-    select.addEventListener('change', (e) => {
-      chrome.storage.local.set({ linkedInStyle: e.target.value });
+    styleOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        const val = opt.getAttribute('data-value');
+        updateActiveStyle(val);
+        chrome.storage.local.set({ linkedInStyle: val });
+      });
     });
   }
 

@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <body className={`${inter.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
         <div className="noise-overlay"></div>
         <div className="mesh-bg">
           <div className="orb orb-1"></div>

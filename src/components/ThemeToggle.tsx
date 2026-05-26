@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
+import { MoonStar, Sun } from "lucide-react";
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
@@ -26,22 +26,33 @@ export function ThemeToggle() {
         justifyContent: "center",
         width: "40px",
         height: "40px",
-        borderRadius: "12px",
-        background: "var(--surface-elevated)",
-        border: "1px solid var(--border-subtle)",
-        color: "var(--text-primary)",
+        borderRadius: "50%",
+        background: "transparent",
+        border: "1px dashed var(--border-subtle)",
+        color: "var(--text-secondary)",
         cursor: "pointer",
-        transition: "all 0.2s ease",
+        transition: "all 0.3s ease",
       }}
       aria-label="Toggle Theme"
       className="theme-toggle"
     >
-      {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+      <div className="icon-wrapper">
+        {theme === "dark" ? <MoonStar size={18} /> : <Sun size={18} />}
+      </div>
       <style jsx>{`
         .theme-toggle:hover {
-          border-color: var(--border-glow);
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          color: var(--text-primary);
+          border-color: var(--text-primary);
+        }
+        .theme-toggle:hover .icon-wrapper {
+          transform: rotate(15deg) scale(1.1);
+          transition: transform 0.3s ease;
+        }
+        .icon-wrapper {
+          transition: transform 0.3s ease;
+          display: flex;
+          align-items: center;
+          justifyContent: center;
         }
       `}</style>
     </button>

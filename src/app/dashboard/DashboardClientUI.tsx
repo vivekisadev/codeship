@@ -75,9 +75,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
       {/* Top Navigation */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--text-primary)' }} className="display-font">
-          <div style={{ background: 'var(--text-primary)', color: 'var(--background)', borderRadius: '8px', padding: '6px' }}>
-            <Logo size={20} />
-          </div>
+          <Logo size={24} />
           Codeship
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
