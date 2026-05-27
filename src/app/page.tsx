@@ -55,8 +55,11 @@ export default function Home() {
           justifyContent: "space-between",
           alignItems: "center",
           padding: "24px 0",
-          position: "relative",
-          zIndex: 10,
+          position: "sticky",
+          top: 0,
+          zIndex: 50,
+          backdropFilter: "blur(12px)",
+          backgroundColor: "rgba(255, 255, 255, 0.02)",
         }}
       >
         <div

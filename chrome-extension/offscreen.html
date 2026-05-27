@@ -213,7 +213,7 @@
   #exportStage{
     display:inline-block;
     position:relative;
-    padding: var(--pad, 64px);
+    padding: var(--pad, 24px);
     border-radius: 4px;
   }
   #noiseOverlay{
@@ -243,7 +243,7 @@
     display:flex;
     font-family: 'JetBrains Mono', 'Fira Code', Menlo, Consolas, monospace;
     white-space: pre;
-    overflow-x: auto;
+    overflow: visible;
   }
   #lineNumbers{
     text-align:right; user-select:none; opacity:0.5;
@@ -376,8 +376,8 @@ console.log(fibonacci(10)); // 55</textarea>
 
     <div class="section">
       <div class="section-label">Frame</div>
-      <div class="range-label"><span>Padding</span><span id="padVal">64px</span></div>
-      <input type="range" id="padRange" min="0" max="120" value="64">
+      <div class="range-label"><span>Padding</span><span id="padVal">24px</span></div>
+      <input type="range" id="padRange" min="0" max="120" value="24">
       <div style="margin-top:14px;">
         <div class="section-label">Shadow</div>
         <select id="shadowSelect">
@@ -922,7 +922,7 @@ let state = {
   fontFamily: 'jetbrains',
   fontSize: 15,
   lineHeight: 1.65,
-  padding: 64,
+  padding: 24,
   shadow: 'medium',
   showChrome: true,
   showFname: true,
