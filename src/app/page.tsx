@@ -28,9 +28,13 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      setScrolled((prev) => {
+        if (!prev && window.scrollY > 60) return true;
+        if (prev && window.scrollY < 20) return false;
+        return prev;
+      });
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -72,7 +76,7 @@ export default function Home() {
           borderRadius: scrolled ? "var(--radius-full)" : "0",
           border: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
           boxShadow: scrolled ? "0 12px 32px -8px rgba(0, 0, 0, 0.08)" : "none",
-          transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+          transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
@@ -81,7 +85,7 @@ export default function Home() {
             fontSize: scrolled ? '1.5rem' : '2rem', 
             letterSpacing: '-0.04em', 
             color: 'var(--text-primary)', 
-            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' 
+            transition: 'all 0.5s cubic-bezier(0.22, 1, 0.36, 1)' 
           }}>
             Codeship
           </span>
@@ -542,7 +546,7 @@ export default function Home() {
                 margin: "0",
               }}
             >
-              <span className="display-font" style={{ fontWeight: '900', fontSize: '1.5rem', letterSpacing: '-0.04em', color: 'var(--text-primary)' }}>
+              <span className="display-font" style={{ fontWeight: '900', fontSize: '1.5rem', letterSpacing: '-0.04em', color: '#fff' }}>
                 Codeship
               </span>
             </div>
