@@ -16,7 +16,6 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { InstallModal } from "../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Logo } from "@/components/Logo";
 import { FAQ } from "@/components/FAQ";
 import { Testimonials } from "@/components/Testimonials";
 import { SolutionGrid } from "@/components/SolutionGrid";
@@ -76,22 +75,17 @@ export default function Home() {
           transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: scrolled ? "8px" : "12px",
-            fontWeight: "bold",
-            fontSize: scrolled ? "1.25rem" : "1.35rem",
-            letterSpacing: "-0.02em",
-            color: "var(--text-primary)",
-            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
-          className="display-font"
-        >
-          <Logo size={scrolled ? 24 : 42} />
-          <span>Codeship</span>
-        </div>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <span className="display-font" style={{ 
+            fontWeight: '900', 
+            fontSize: scrolled ? '1.5rem' : '2rem', 
+            letterSpacing: '-0.04em', 
+            color: 'var(--text-primary)', 
+            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' 
+          }}>
+            Codeship
+          </span>
+        </Link>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <ThemeToggle />
           {status === "loading" ? (
@@ -204,7 +198,7 @@ export default function Home() {
                 gap: "10px",
               }}
             >
-              <Logo size={42} /> Install Extension
+              <FaChrome size={24} /> Install Extension
             </a>
           </div>
         </motion.div>
@@ -255,7 +249,9 @@ export default function Home() {
                 marginBottom: "20px",
               }}
             >
-              <Logo size={42} /> Codeship
+              <span className="display-font" style={{ fontWeight: '900', fontSize: '1.5rem', letterSpacing: '-0.04em', color: 'var(--text-primary)' }}>
+                Codeship
+              </span>
             </div>
             {["Dashboard", "Submissions", "Analytics", "Settings"].map(
               (item, i) => (
@@ -546,8 +542,9 @@ export default function Home() {
                 margin: "0",
               }}
             >
-              <Logo size={42} />
-              <span style={{ fontSize: "1.1rem" }}>Codeship</span>
+              <span className="display-font" style={{ fontWeight: '900', fontSize: '1.5rem', letterSpacing: '-0.04em', color: 'var(--text-primary)' }}>
+                Codeship
+              </span>
             </div>
           </div>
 
@@ -937,7 +934,7 @@ export default function Home() {
                   gap: "10px",
                 }}
               >
-                <Logo size={42} /> Install Extension
+                <FaChrome size={24} /> Install Extension
               </a>
             </div>
           </div>
@@ -997,7 +994,9 @@ export default function Home() {
             marginBottom: "40px",
           }}
         >
-          <Logo size={100} />
+          <span className="display-font" style={{ fontWeight: '900', fontSize: '3rem', letterSpacing: '-0.04em', color: 'var(--text-primary)' }}>
+            Codeship
+          </span>
           <p
             style={{
               color: "var(--text-secondary)",

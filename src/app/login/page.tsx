@@ -1,7 +1,6 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Logo } from "@/components/Logo";
 import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
@@ -74,7 +73,9 @@ export default function LoginPage() {
           background: "var(--background)",
         }}
       >
-        <Logo size={42} />
+        <span className="display-font" style={{ fontWeight: '900', fontSize: '2rem', letterSpacing: '-0.04em', color: 'var(--text-primary)' }}>
+          Codeship
+        </span>
       </div>
     );
   }
@@ -106,15 +107,17 @@ export default function LoginPage() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "8px",
-            fontWeight: "bold",
-            fontSize: "1.25rem",
-            color: "var(--text-primary)",
+            textDecoration: 'none'
           }}
-          className="display-font"
         >
-          <Logo size={42} />
-          Codeship
+          <span className="display-font" style={{ 
+            fontWeight: '900', 
+            fontSize: '1.5rem', 
+            letterSpacing: '-0.04em', 
+            color: 'var(--text-primary)' 
+          }}>
+            Codeship
+          </span>
         </Link>
         <ThemeToggle />
       </div>

@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Settings, ExternalLink, Zap, Flame, CodeSquare, RefreshCw, LogOut } from "lucide-react";
-import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { WelcomeToast } from "@/components/WelcomeToast";
 import { useRouter } from "next/navigation";
@@ -106,9 +105,16 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
           transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
           margin: scrolled ? "0 -24px" : "0", 
         }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: scrolled ? '8px' : '12px', fontWeight: 'bold', fontSize: scrolled ? '1.25rem' : '1.35rem', color: 'var(--text-primary)', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }} className="display-font">
-          <Logo size={scrolled ? 24 : 42} />
-          Codeship
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <span className="display-font" style={{ 
+            fontWeight: '900', 
+            fontSize: scrolled ? '1.5rem' : '2rem', 
+            letterSpacing: '-0.04em', 
+            color: 'var(--text-primary)', 
+            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' 
+          }}>
+            Codeship
+          </span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <ThemeToggle />
@@ -186,7 +192,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
           {submissions.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '64px 24px', background: 'var(--tile-bg)', borderRadius: '16px', border: '1px dashed var(--border-subtle)' }}>
               <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' }}>
-                <Logo size={24} color="var(--text-tertiary)" />
+                <CodeSquare size={24} color="var(--text-tertiary)" />
               </div>
               <p style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '8px' }}>No solutions captured yet</p>
               <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>Go to LeetCode and submit a passing solution to see it sync here magically.</p>

@@ -9,7 +9,6 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { InstallModal } from "../../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Logo } from "@/components/Logo";
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
@@ -143,21 +142,16 @@ export default function SettingsPage() {
           margin: scrolled ? "0 24px" : "0",
         }}
       >
-        <Link
-          href="/"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: scrolled ? "8px" : "12px",
-            fontWeight: "bold",
-            fontSize: scrolled ? "1.25rem" : "1.35rem",
-            color: "var(--text-primary)",
-            transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
-          className="display-font"
-        >
-          <Logo size={scrolled ? 24 : 42} />
-          Codeship
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <span className="display-font" style={{ 
+            fontWeight: '900', 
+            fontSize: scrolled ? '1.5rem' : '2rem', 
+            letterSpacing: '-0.04em', 
+            color: 'var(--text-primary)', 
+            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' 
+          }}>
+            Codeship
+          </span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <ThemeToggle />
@@ -185,8 +179,7 @@ export default function SettingsPage() {
               fontSize: "0.875rem",
             }}
           >
-            <Logo size={42} />
-            Logout
+            <LogOut size={16} />
           </button>
           <div
             style={{

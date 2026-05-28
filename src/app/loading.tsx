@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Logo } from "@/components/Logo";
 import { TextShimmer } from "@/components/TextShimmer";
 
 export default function Loading() {
@@ -35,14 +34,11 @@ export default function Loading() {
         <motion.div
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          style={{ display: "flex", alignItems: "center", gap: "8px" }}
         >
-          <Logo size={56} />
+          <TextShimmer className="display-font" style={{ fontSize: "2rem", fontWeight: "bold" }}>
+            Codeship
+          </TextShimmer>
         </motion.div>
-        
-        <TextShimmer className="display-font" style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
-          Codeship
-        </TextShimmer>
       </motion.div>
     </div>
   );
