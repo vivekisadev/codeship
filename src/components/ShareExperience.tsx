@@ -60,10 +60,24 @@ export function ShareExperience() {
           gap: '8px',
           padding: '12px 24px',
           fontWeight: 600,
-          border: 'none',
+          border: '1px solid var(--border-glow)',
+          background: 'var(--surface-elevated)',
+          color: 'var(--text-primary)',
           cursor: 'pointer',
           fontSize: '1rem',
-          margin: '0 auto'
+          margin: '0 auto',
+          position: 'relative',
+          zIndex: 10,
+          boxShadow: '0 8px 30px -10px rgba(0,0,0,0.15)',
+          borderRadius: 'var(--radius-full)'
+        }}
+        onMouseOver={(e) => {
+          e.currentTarget.style.transform = 'translateY(-2px)';
+          e.currentTarget.style.boxShadow = '0 12px 40px -10px rgba(0,0,0,0.2)';
+        }}
+        onMouseOut={(e) => {
+          e.currentTarget.style.transform = 'translateY(0)';
+          e.currentTarget.style.boxShadow = '0 8px 30px -10px rgba(0,0,0,0.15)';
         }}
       >
         <MessageSquare size={18} /> Share Your Experience
@@ -78,12 +92,12 @@ export function ShareExperience() {
             style={{
               position: 'fixed',
               top: 0, left: 0, right: 0, bottom: 0,
-              zIndex: 999,
+              zIndex: 999999,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'rgba(0, 0, 0, 0.5)',
-              backdropFilter: 'blur(6px)',
+              background: 'rgba(0, 0, 0, 0.4)',
+              backdropFilter: 'blur(12px)',
               padding: '16px'
             }}
             onClick={(e) => {
@@ -91,22 +105,35 @@ export function ShareExperience() {
             }}
           >
             <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.98 }}
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 15, scale: 0.98 }}
-              transition={{ type: "spring", damping: 30, stiffness: 350 }}
+              exit={{ opacity: 0, y: 20, scale: 0.95 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
               style={{
-                background: 'var(--surface-base)',
-                border: '1px solid var(--border-subtle)',
+                position: 'relative',
+                background: 'var(--surface-elevated)',
+                border: '1px solid var(--border-glow)',
                 width: '100%',
-                maxWidth: '450px',
-                padding: '32px',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: '0 12px 40px -10px rgba(0,0,0,0.3)',
+                maxWidth: '500px',
+                padding: '40px',
+                borderRadius: '24px',
+                boxShadow: '0 24px 60px -12px rgba(0,0,0,0.4)',
                 maxHeight: '90vh',
                 overflowY: 'auto'
               }}
             >
+              {/* Premium Glow Effect inside Modal */}
+              <div style={{
+                position: 'absolute',
+                top: 0, left: '50%',
+                transform: 'translateX(-50%)',
+                width: '60%',
+                height: '4px',
+                background: 'linear-gradient(90deg, transparent, var(--text-primary), transparent)',
+                opacity: 0.3,
+                borderRadius: '100%',
+                filter: 'blur(4px)'
+              }}></div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 <h2 className="display-font" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Share Your Experience</h2>
                 <button
@@ -239,7 +266,7 @@ export function ShareExperience() {
                 >
                   {isSubmitting ? "Submitting..." : (
                     <>
-                      <Send size={18} /> Submit Testimonial
+                      <Send size={18} /> Send to the World
                     </>
                   )}
                 </button>

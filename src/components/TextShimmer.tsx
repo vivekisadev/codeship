@@ -14,7 +14,7 @@ export function TextShimmer({ children, className = "", style = {} }: TextShimme
       className={className}
       style={{
         display: "inline-block",
-        background: "linear-gradient(90deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.4) 100%)",
+        background: "linear-gradient(90deg, var(--shimmer-1) 0%, var(--shimmer-2) 50%, var(--shimmer-1) 100%)",
         backgroundSize: "200% auto",
         color: "transparent",
         WebkitBackgroundClip: "text",

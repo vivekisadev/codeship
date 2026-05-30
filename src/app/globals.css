@@ -22,6 +22,9 @@
   --mesh-bg-opacity: 1;
   --noise-opacity: 0.04;
   --tile-bg: #ffffff;
+  
+  --shimmer-1: rgba(0,0,0,0.4);
+  --shimmer-2: rgba(0,0,0,1);
 }
 
 [data-theme='dark'] {
@@ -43,6 +46,9 @@
   --mesh-bg-opacity: 0.05;
   --noise-opacity: 0.06;
   --tile-bg: #000000;
+  
+  --shimmer-1: rgba(255,255,255,0.4);
+  --shimmer-2: rgba(255,255,255,1);
 }
 
 /* Invert the logo image in light mode to make the white logo black */

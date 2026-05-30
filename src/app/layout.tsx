@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { ReportIssue } from "@/components/ReportIssue";
+import { Preloader } from "@/components/Preloader";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
@@ -27,8 +28,10 @@ export default function RootLayout({
           <div className="orb orb-3"></div>
         </div>
         <Providers>
-          {children}
-          <ReportIssue />
+          <Preloader>
+            {children}
+            <ReportIssue />
+          </Preloader>
         </Providers>
       </body>
     </html>
