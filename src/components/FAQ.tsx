@@ -66,10 +66,11 @@ export function FAQ() {
               key={index}
               style={{
                 border: "1px solid var(--border-subtle)",
-                borderRadius: "12px",
-                background: isOpen ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.2)",
+                borderRadius: "16px",
+                background: isOpen ? "var(--surface-elevated)" : "var(--surface-base)",
+                boxShadow: isOpen ? "0 8px 32px -12px rgba(0,0,0,0.08)" : "none",
                 overflow: "hidden",
-                transition: "all 0.2s ease"
+                transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
               }}
             >
               <button

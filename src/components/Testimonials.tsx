@@ -50,9 +50,9 @@ function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
   return (
     <div
       style={{
-        padding: "24px",
-        background: "rgba(255, 255, 255, 0.02)",
+        background: "var(--surface-elevated)",
         border: "1px solid var(--border-subtle)",
+        boxShadow: "0 4px 24px -12px rgba(0,0,0,0.08)",
         borderRadius: "16px",
         marginBottom: "16px",
         display: "flex",
@@ -66,12 +66,12 @@ function TestimonialCard({ t }: { t: typeof testimonials[0] }) {
             width: "40px",
             height: "40px",
             borderRadius: "10px",
-            background: "rgba(255,255,255,0.05)",
+            background: "var(--surface-base)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             fontSize: "1.2rem",
-            border: "1px solid rgba(255,255,255,0.05)",
+            border: "1px solid var(--border-subtle)",
           }}
         >
           {t.avatar}
