@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send } from "lucide-react";
 import toast from "react-hot-toast";
@@ -15,6 +16,11 @@ export function ShareExperience() {
   const [handle, setHandle] = useState("");
   const [text, setText] = useState("");
   const [avatar, setAvatar] = useState(AVATARS[0]);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,7 +89,8 @@ export function ShareExperience() {
         <MessageSquare size={18} /> Share Your Experience
       </button>
 
-      <AnimatePresence>
+      {mounted && createPortal(
+        <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -274,7 +281,9 @@ export function ShareExperience() {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 }
