@@ -138,10 +138,10 @@ export function Testimonials() {
           100% { transform: translateY(0); }
         }
         .scroll-track-up {
-          animation: scrollUp 40s linear infinite;
+          animation: scrollUp 25s linear infinite;
         }
         .scroll-track-down {
-          animation: scrollDown 40s linear infinite;
+          animation: scrollDown 25s linear infinite;
         }
         .scroll-track-up:hover, .scroll-track-down:hover {
           animation-play-state: paused;
@@ -197,7 +197,7 @@ export function Testimonials() {
         {/* Left Column - Scrolls Down */}
         <div style={{ borderRight: "1px solid var(--border-subtle)", padding: "16px", overflow: "hidden" }}>
           <div className="scroll-track-down" style={{ display: "flex", flexDirection: "column" }}>
-            {[...renderCol1, ...renderCol1].map((t, i) => (
+            {[...renderCol1, ...renderCol1, ...renderCol1, ...renderCol1, ...renderCol1, ...renderCol1, ...renderCol1, ...renderCol1].map((t, i) => (
               <TestimonialCard key={`col1-${i}`} t={t} />
             ))}
           </div>
@@ -206,7 +206,7 @@ export function Testimonials() {
         {/* Middle Column - Scrolls Up */}
         <div style={{ borderRight: "1px solid var(--border-subtle)", padding: "16px", overflow: "hidden" }}>
           <div className="scroll-track-up" style={{ display: "flex", flexDirection: "column" }}>
-            {[...renderCol2, ...renderCol2].map((t, i) => (
+            {[...renderCol2, ...renderCol2, ...renderCol2, ...renderCol2, ...renderCol2, ...renderCol2, ...renderCol2, ...renderCol2].map((t, i) => (
               <TestimonialCard key={`col2-${i}`} t={t} />
             ))}
           </div>
@@ -215,7 +215,7 @@ export function Testimonials() {
         {/* Right Column - Scrolls Down */}
         <div style={{ padding: "16px", overflow: "hidden" }}>
           <div className="scroll-track-down" style={{ display: "flex", flexDirection: "column" }}>
-            {[...renderCol3, ...renderCol3].map((t, i) => (
+            {[...renderCol3, ...renderCol3, ...renderCol3, ...renderCol3, ...renderCol3, ...renderCol3, ...renderCol3, ...renderCol3].map((t, i) => (
               <TestimonialCard key={`col3-${i}`} t={t} />
             ))}
           </div>
