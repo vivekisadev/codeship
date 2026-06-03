@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { ChevronRight, Github, Code2, Zap, Settings, ArrowRight } from "lucide-react";
+import { ChevronRight, Terminal, Code2, Zap, Settings, ArrowRight } from "lucide-react";
 
 export default function DocsPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -205,7 +205,7 @@ export default function DocsPage() {
           <motion.section variants={itemVariants}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
               <div style={{ padding: "10px", background: "rgba(255,255,255,0.05)", borderRadius: "12px", border: "1px solid var(--border-subtle)" }}>
-                <Github size={24} />
+                <Terminal size={24} />
               </div>
               <h2 className="display-font" style={{ fontSize: "2rem", fontWeight: "700", letterSpacing: "-0.02em" }}>Usage Guide</h2>
             </div>
