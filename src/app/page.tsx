@@ -66,17 +66,17 @@ export default function Home() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: scrolled ? "12px 24px" : "24px 0",
+          padding: scrolled ? "16px 24px" : "24px 0",
           position: "sticky",
-          top: scrolled ? "16px" : "0",
+          top: "0",
           zIndex: 50,
           backdropFilter: scrolled ? "blur(24px)" : "none",
           WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
           backgroundColor: scrolled ? "var(--surface-elevated)" : "transparent",
-          borderRadius: scrolled ? "var(--radius-full)" : "0",
-          border: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
-          boxShadow: scrolled ? "0 12px 32px -8px rgba(0, 0, 0, 0.08)" : "none",
-          transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+          borderBottom: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
+          boxShadow: scrolled ? "0 4px 24px -8px rgba(0, 0, 0, 0.2)" : "none",
+          transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+          margin: scrolled ? "0 -24px" : "0",
         }}
       >
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
@@ -1020,27 +1020,20 @@ export default function Home() {
             fontSize: "0.875rem",
           }}
         >
-          <Link href="#" style={{ color: "var(--text-primary)" }}>
-            Product
+          <Link href="/docs" style={{ color: "var(--text-primary)", textDecoration: "none" }}>
+            Documentation
           </Link>
-          <Link href="#" style={{ color: "var(--text-primary)" }}>
-            Pricing
-          </Link>
-          <Link href="#" style={{ color: "var(--text-primary)" }}>
-            Integrations
-          </Link>
-          <Link href="#" style={{ color: "var(--text-primary)" }}>
-            Developer Resources
+          <Link href="/dashboard" style={{ color: "var(--text-primary)", textDecoration: "none" }}>
+            Dashboard
           </Link>
         </div>
 
         <div
           style={{ display: "flex", gap: "16px", color: "var(--text-primary)" }}
         >
-          <span style={{ fontWeight: "bold" }}>X</span>
-          <span style={{ fontWeight: "bold" }}>in</span>
-          <span style={{ fontWeight: "bold" }}>ig</span>
-          <span style={{ fontWeight: "bold" }}>yt</span>
+          <a href="https://github.com/vivekisadev/codeship" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-primary)", textDecoration: "none", fontWeight: "bold" }}>
+            GitHub
+          </a>
         </div>
       </footer>
 
