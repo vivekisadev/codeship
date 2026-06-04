@@ -41,9 +41,15 @@ export function Preloader({ children }: { children: React.ReactNode }) {
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              exit={{ 
+                scale: 0.3, 
+                y: typeof window !== 'undefined' ? -(window.innerHeight / 2) + 40 : -300, 
+                x: typeof window !== 'undefined' ? -(window.innerWidth / 2) + 80 : -300,
+                opacity: 0 
+              }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              <TextShimmer layoutId="logo-text" className="display-font" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", fontWeight: "bold", margin: 0, letterSpacing: "-0.03em" }}>
+              <TextShimmer className="display-font" style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)", fontWeight: "bold", margin: 0, letterSpacing: "-0.03em" }}>
                 Codeship
               </TextShimmer>
             </motion.div>

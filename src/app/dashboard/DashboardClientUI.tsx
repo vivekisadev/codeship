@@ -84,32 +84,36 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
   };
 
   return (
-    <div style={{ minHeight: '100vh', padding: '40px 24px', maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '48px', paddingBottom: '100px' }}>
+    <>
       <WelcomeToast userName={session.user.name} />
       
       {/* Top Navigation */}
+      <div
+        style={{
+          position: "sticky",
+          top: "0",
+          zIndex: 50,
+          width: "100%",
+          backgroundColor: scrolled ? "var(--background)" : "transparent",
+          borderBottom: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
+          boxShadow: scrolled ? "0 4px 24px -8px rgba(0, 0, 0, 0.2)" : "none",
+          transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
+      >
       <motion.div 
         initial={{ opacity: 0, y: -10 }} 
         animate={{ opacity: 1, y: 0 }} 
         transition={{ duration: 0.5 }} 
+        className="container"
         style={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'center',
-          padding: scrolled ? "16px 24px" : "0",
-          position: "sticky",
-          top: "0",
-          zIndex: 50,
-          backdropFilter: scrolled ? "blur(24px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
-          backgroundColor: scrolled ? "var(--surface-elevated)" : "transparent",
-          borderBottom: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
-          boxShadow: scrolled ? "0 4px 24px -8px rgba(0, 0, 0, 0.2)" : "none",
-          transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-          margin: scrolled ? "0 -24px" : "0",
+          padding: scrolled ? "12px 24px" : "24px 24px",
+          transition: "padding 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
         }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <motion.span layoutId="logo-text" className="display-font" style={{ 
+          <span className="display-font" style={{ 
             fontWeight: '900', 
             fontSize: scrolled ? '1.5rem' : '2rem', 
             letterSpacing: '-0.04em', 
@@ -117,7 +121,7 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
             transition: 'all 0.5s cubic-bezier(0.22, 1, 0.36, 1)' 
           }}>
             Codeship
-          </motion.span>
+          </span>
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <ThemeToggle />
@@ -129,7 +133,9 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
           </button>
         </div>
       </motion.div>
+      </div>
 
+      <div style={{ minHeight: '100vh', padding: '40px 24px', maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '48px', paddingBottom: '100px' }}>
       <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
         {/* Welcome Section */}
         <motion.div variants={itemVariants}>
@@ -232,5 +238,6 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
         </motion.div>
       </motion.div>
     </div>
+    </>
   );
 }

@@ -13,8 +13,9 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 export default function SettingsPage() {
   const { data: session, status } = useSession();
 
-  const [githubPat, setGithubPat] = useState("");
   const [targetRepo, setTargetRepo] = useState("");
+  const [repos, setRepos] = useState<{id: number, name: string}[]>([]);
+  const [loadingRepos, setLoadingRepos] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [showInstallModal, setShowInstallModal] = useState(false);
@@ -40,12 +41,22 @@ export default function SettingsPage() {
         .then((res) => res.json())
         .then((data) => {
           if (data) {
-            setGithubPat(data.githubPat || "");
             setTargetRepo(data.targetRepo || "");
             setAutoLinkedIn(data.autoLinkedIn || false);
             setLinkedinConnected(data.linkedinConnected || false);
           }
         });
+
+      setLoadingRepos(true);
+      fetch("/api/github/repos")
+        .then((res) => res.json())
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setRepos(data);
+          }
+          setLoadingRepos(false);
+        })
+        .catch(() => setLoadingRepos(false));
     }
   }, [status]);
 
@@ -126,24 +137,29 @@ export default function SettingsPage() {
       }}
     >
       {/* Top Navigation */}
-      <nav
+      <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: scrolled ? "16px 24px" : "24px",
           position: "sticky",
           top: "0",
           zIndex: 50,
-          backdropFilter: scrolled ? "blur(24px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(24px)" : "none",
-          backgroundColor: scrolled ? "var(--surface-elevated)" : "transparent",
+          width: "100%",
+          backgroundColor: scrolled ? "var(--background)" : "transparent",
+          backdropFilter: scrolled ? "none" : "none", // Background is solid when scrolled
           borderBottom: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
           boxShadow: scrolled ? "0 4px 24px -8px rgba(0, 0, 0, 0.2)" : "none",
           transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-          margin: scrolled ? "0 -24px" : "0",
         }}
       >
+        <nav
+          className="container"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: scrolled ? "12px 24px" : "24px 24px",
+            transition: "padding 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+          }}
+        >
         <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <motion.span layoutId="logo-text" className="display-font" style={{ 
             fontWeight: '900', 
@@ -201,7 +217,8 @@ export default function SettingsPage() {
             )}
           </div>
         </div>
-      </nav>
+        </nav>
+      </div>
 
       <main
         className="container"
@@ -322,11 +339,10 @@ export default function SettingsPage() {
                 >
                   Target Repository Name
                 </label>
-                <input
-                  type="text"
+                <select
                   value={targetRepo}
                   onChange={(e) => setTargetRepo(e.target.value)}
-                  placeholder="e.g. yourusername/leetcode-solutions"
+                  disabled={loadingRepos}
                   style={{
                     width: "100%",
                     padding: "12px",
@@ -335,8 +351,19 @@ export default function SettingsPage() {
                     border: "1px solid var(--border-subtle)",
                     borderRadius: "var(--radius-md)",
                     outline: "none",
+                    cursor: "pointer",
+                    appearance: "none",
                   }}
-                />
+                >
+                  <option value="" disabled>
+                    {loadingRepos ? "Loading repositories..." : "Select a repository"}
+                  </option>
+                  {repos.map((repo) => (
+                    <option key={repo.id} value={repo.name}>
+                      {repo.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div
