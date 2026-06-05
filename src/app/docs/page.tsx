@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Navbar } from "@/components/Navbar";
 import { ChevronRight, Terminal, Code2, Zap, Settings, ArrowRight } from "lucide-react";
 
 export default function DocsPage() {
@@ -43,50 +44,13 @@ export default function DocsPage() {
       }}
     >
       {/* Navigation */}
-      <div
-        style={{
-          position: "sticky",
-          top: "0",
-          zIndex: 50,
-          width: "100%",
-          backgroundColor: scrolled ? "var(--background)" : "transparent",
-          borderBottom: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
-          boxShadow: scrolled ? "0 4px 24px -8px rgba(0, 0, 0, 0.2)" : "none",
-          transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-        }}
-      >
-      <motion.nav
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="container"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: scrolled ? "12px 24px" : "24px 24px",
-          transition: "padding 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-        }}
-      >
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <span className="display-font" style={{ 
-            fontWeight: '900', 
-            fontSize: scrolled ? '1.5rem' : '2rem', 
-            letterSpacing: '-0.04em', 
-            color: 'var(--text-primary)', 
-            transition: 'all 0.5s cubic-bezier(0.22, 1, 0.36, 1)' 
-          }}>
-            Codeship
-          </span>
-        </Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <ThemeToggle />
+      <Navbar
+        rightContent={
           <Link href="/dashboard" className="btn-primary" style={{ padding: "8px 16px", fontSize: "0.9rem" }}>
             Dashboard
           </Link>
-        </div>
-      </motion.nav>
-      </div>
+        }
+      />
 
       <main style={{ maxWidth: "800px", margin: "0 auto", padding: "60px 24px 120px 24px" }}>
         

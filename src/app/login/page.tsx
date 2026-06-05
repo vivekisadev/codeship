@@ -5,6 +5,7 @@ import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Navbar } from "@/components/Navbar";
 import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -86,41 +87,11 @@ export default function LoginPage() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
         background: "var(--background)",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: "24px",
-          left: "24px",
-          right: "24px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Link
-          href="/"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            textDecoration: 'none'
-          }}
-        >
-          <span className="display-font" style={{ 
-            fontWeight: '900', 
-            fontSize: '1.5rem', 
-            letterSpacing: '-0.04em', 
-            color: 'var(--text-primary)' 
-          }}>
-            Codeship
-          </span>
-        </Link>
-        <ThemeToggle />
-      </div>
+      <Navbar />
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px" }}>
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -212,6 +183,7 @@ export default function LoginPage() {
           </motion.div>
         </AnimatePresence>
       </motion.div>
+      </div>
     </div>
   );
 }

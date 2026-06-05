@@ -15,7 +15,8 @@ import { SiLeetcode } from "react-icons/si";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { InstallModal } from "../components/InstallModal";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { Navbar } from "../components/Navbar";
 import { FAQ } from "@/components/FAQ";
 import { Testimonials } from "@/components/Testimonials";
 import { SolutionGrid } from "@/components/SolutionGrid";
@@ -58,75 +59,26 @@ export default function Home() {
   return (
     <>
       {/* Navigation */}
-      <div
-        style={{
-          position: "sticky",
-          top: "0",
-          zIndex: 50,
-          width: "100%",
-          backgroundColor: scrolled ? "var(--background)" : "transparent",
-          borderBottom: scrolled
-            ? "1px solid var(--border-subtle)"
-            : "1px solid transparent",
-          boxShadow: scrolled ? "0 4px 24px -8px rgba(0, 0, 0, 0.2)" : "none",
-          transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-        }}
-      >
-        <motion.nav
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="container"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: scrolled ? "12px 24px" : "24px 24px",
-            transition: "padding 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
-        >
-          <Link
-            href="/"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              textDecoration: "none",
-            }}
-          >
-            <span
-              className="display-font"
-              style={{
-                fontWeight: "900",
-                fontSize: scrolled ? "1.5rem" : "2rem",
-                letterSpacing: "-0.04em",
-                color: "var(--text-primary)",
-                transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
-              }}
-            >
-              Codeship
-            </span>
-          </Link>
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <ThemeToggle />
-            {status === "loading" ? (
-              <div style={{ width: "80px" }}></div>
-            ) : session ? (
-              <Link href="/dashboard" className="btn-primary">
-                Go to Dashboard
+      <Navbar
+        rightContent={
+          status === "loading" ? (
+            <div style={{ width: "80px" }}></div>
+          ) : session ? (
+            <Link href="/dashboard" className="btn-primary">
+              Go to Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className="btn-secondary">
+                Log In
               </Link>
-            ) : (
-              <>
-                <Link href="/login" className="btn-secondary">
-                  Log In
-                </Link>
-                <Link href="/login" className="btn-primary">
-                  Get Started
-                </Link>
-              </>
-            )}
-          </div>
-        </motion.nav>
-      </div>
+              <Link href="/login" className="btn-primary">
+                Get Started
+              </Link>
+            </>
+          )
+        }
+      />
 
       <main className="container" style={{ paddingBottom: "120px" }}>
         {/* Hero Section */}
@@ -204,6 +156,20 @@ export default function Home() {
                 <FaChrome size={24} /> Install Extension
               </a>
             </div>
+            <Link
+              href="/docs"
+              className="btn-secondary"
+              style={{
+                padding: "14px 32px",
+                fontSize: "1.05rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                borderRadius: "var(--radius-full)"
+              }}
+            >
+              <FileCode2 size={24} /> Documentation
+            </Link>
           </motion.div>
         </motion.section>
 
@@ -1007,7 +973,7 @@ export default function Home() {
               fontSize: "20vw",
               fontWeight: "bold",
               color: "var(--text-primary)",
-              opacity: 0.03,
+              opacity: 0.1,
               lineHeight: "0.8",
               whiteSpace: "nowrap",
               userSelect: "none",

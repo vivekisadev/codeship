@@ -164,7 +164,7 @@ export function ReportIssue() {
                             left: 0,
                             right: 0,
                             marginTop: '8px',
-                            background: 'var(--surface-elevated)',
+                            background: 'var(--surface-base)',
                             border: '1px solid var(--border-subtle)',
                             borderRadius: '8px',
                             overflow: 'hidden',

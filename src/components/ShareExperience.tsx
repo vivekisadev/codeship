@@ -68,7 +68,6 @@ export function ShareExperience() {
           fontWeight: 600,
           border: '1px solid var(--border-glow)',
           background: 'var(--surface-elevated)',
-          color: 'var(--text-primary)',
           cursor: 'pointer',
           fontSize: '1rem',
           margin: '0 auto',

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Settings, ExternalLink, Zap, Flame, CodeSquare, RefreshCw, LogOut } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { WelcomeToast } from "@/components/WelcomeToast";
+import { Navbar } from "@/components/Navbar";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
@@ -88,52 +89,18 @@ export function DashboardClientUI({ session, user, submissions }: { session: any
       <WelcomeToast userName={session.user.name} />
       
       {/* Top Navigation */}
-      <div
-        style={{
-          position: "sticky",
-          top: "0",
-          zIndex: 50,
-          width: "100%",
-          backgroundColor: scrolled ? "var(--background)" : "transparent",
-          borderBottom: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
-          boxShadow: scrolled ? "0 4px 24px -8px rgba(0, 0, 0, 0.2)" : "none",
-          transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-        }}
-      >
-      <motion.div 
-        initial={{ opacity: 0, y: -10 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.5 }} 
-        className="container"
-        style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          padding: scrolled ? "12px 24px" : "24px 24px",
-          transition: "padding 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-        }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <span className="display-font" style={{ 
-            fontWeight: '900', 
-            fontSize: scrolled ? '1.5rem' : '2rem', 
-            letterSpacing: '-0.04em', 
-            color: 'var(--text-primary)', 
-            transition: 'all 0.5s cubic-bezier(0.22, 1, 0.36, 1)' 
-          }}>
-            Codeship
-          </span>
-        </Link>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <ThemeToggle />
-          <Link href="/settings" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
-            <Settings size={16} /> Settings
-          </Link>
-          <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
-            <LogOut size={16} /> Logout
-          </button>
-        </div>
-      </motion.div>
-      </div>
+      <Navbar
+        rightContent={
+          <>
+            <Link href="/settings" className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
+              <Settings size={16} /> Settings
+            </Link>
+            <button onClick={() => signOut({ callbackUrl: "/" })} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', fontSize: '0.875rem' }}>
+              <LogOut size={16} /> Logout
+            </button>
+          </>
+        }
+      />
 
       <div style={{ minHeight: '100vh', padding: '40px 24px', maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '48px', paddingBottom: '100px' }}>
       <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>

@@ -137,88 +137,55 @@ export default function SettingsPage() {
       }}
     >
       {/* Top Navigation */}
-      <div
-        style={{
-          position: "sticky",
-          top: "0",
-          zIndex: 50,
-          width: "100%",
-          backgroundColor: scrolled ? "var(--background)" : "transparent",
-          backdropFilter: scrolled ? "none" : "none", // Background is solid when scrolled
-          borderBottom: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
-          boxShadow: scrolled ? "0 4px 24px -8px rgba(0, 0, 0, 0.2)" : "none",
-          transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-        }}
-      >
-        <nav
-          className="container"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: scrolled ? "12px 24px" : "24px 24px",
-            transition: "padding 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
-        >
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-          <motion.span layoutId="logo-text" className="display-font" style={{ 
-            fontWeight: '900', 
-            fontSize: scrolled ? '1.5rem' : '2rem', 
-            letterSpacing: '-0.04em', 
-            color: 'var(--text-primary)', 
-            transition: 'all 0.5s cubic-bezier(0.22, 1, 0.36, 1)' 
-          }}>
-            Codeship
-          </motion.span>
-        </Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <ThemeToggle />
-          <Link
-            href="/dashboard"
-            className="btn-secondary"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "8px 16px",
-              fontSize: "0.875rem",
-            }}
-          >
-            Dashboard
-          </Link>
-          <button
-            onClick={() => signOut({ callbackUrl: "/" })}
-            className="btn-secondary"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "8px 16px",
-              fontSize: "0.875rem",
-            }}
-          >
-            <LogOut size={16} />
-          </button>
-          <div
-            style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "50%",
-              background: "var(--text-primary)",
-              overflow: "hidden",
-            }}
-          >
-            {session?.user?.image && (
-              <img
-                src={session.user.image}
-                alt="Avatar"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            )}
-          </div>
-        </div>
-        </nav>
-      </div>
+      <Navbar
+        rightContent={
+          <>
+            <Link
+              href="/dashboard"
+              className="btn-secondary"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "8px 16px",
+                fontSize: "0.875rem",
+              }}
+            >
+              Dashboard
+            </Link>
+            <button
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="btn-secondary"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "8px 16px",
+                fontSize: "0.875rem",
+              }}
+            >
+              <LogOut size={16} />
+            </button>
+            <div
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                background: "var(--text-primary)",
+                overflow: "hidden",
+              }}
+            >
+              {session?.user?.image && (
+                <img
+                  src={session.user.image}
+                  alt="Avatar"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              )}
+            </div>
+          </>
+        }
+      />
 
       <main
         className="container"
