@@ -9,6 +9,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { InstallModal } from "../../components/InstallModal";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Navbar } from "@/components/Navbar";
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
