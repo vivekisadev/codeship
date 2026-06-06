@@ -58,7 +58,6 @@ export function Navbar({ rightContent }: NavbarProps) {
           }}
         >
           <motion.span
-            layoutId="logo-text"
             className="display-font"
             style={{
               fontWeight: "900",
