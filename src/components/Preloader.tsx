@@ -102,17 +102,12 @@ export function Preloader({ children }: { children: React.ReactNode }) {
             <motion.div
               ref={logoRef}
               animate={logoControls}
-              initial={{ scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              onAnimationComplete={() => {
-                // Fade in on initial appear
-              }}
-              style={{ opacity: 1 }}
+              initial={{ scale: 1, x: 0, y: 0 }}
             >
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
                 <TextShimmer
                   className="display-font"
