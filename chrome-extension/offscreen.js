@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-async function handleGenerateImage({ code, language, title }) {
+async function handleGenerateImage({ code, language, title, imageTheme }) {
   // Update UI elements and trigger events so the HTML's internal state updates
   const codeInput = document.getElementById('codeInput');
   const langSelect = document.getElementById('langSelect');
@@ -33,8 +33,15 @@ async function handleGenerateImage({ code, language, title }) {
     filenameInput.dispatchEvent(new Event('input'));
   }
 
-  // Optionally randomize the theme to make it unique for every post
-  if (randomizeBtn) {
+  // Set the specific theme or randomize
+  if (imageTheme && imageTheme !== 'random') {
+    const swatch = document.querySelector(`.theme-swatch[data-key="${imageTheme}"]`);
+    if (swatch) {
+      swatch.click();
+    } else if (randomizeBtn) {
+      randomizeBtn.click();
+    }
+  } else if (randomizeBtn) {
     randomizeBtn.click();
   }
 

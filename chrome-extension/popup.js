@@ -1,27 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const styleOptions = document.querySelectorAll('.style-option');
-  
-  if (styleOptions.length > 0) {
-    const updateActiveStyle = (val) => {
-      styleOptions.forEach(opt => {
-        if (opt.getAttribute('data-value') === val) {
-          opt.classList.add('active');
-        } else {
-          opt.classList.remove('active');
-        }
-      });
-    };
+  const postStyleSelect = document.getElementById('postStyle');
+  const imageThemeSelect = document.getElementById('imageTheme');
 
+  if (postStyleSelect) {
     chrome.storage.local.get(['linkedInStyle'], (result) => {
-      updateActiveStyle(result.linkedInStyle || 'random');
+      postStyleSelect.value = result.linkedInStyle || 'random';
     });
+    postStyleSelect.addEventListener('change', (e) => {
+      chrome.storage.local.set({ linkedInStyle: e.target.value });
+    });
+  }
 
-    styleOptions.forEach(opt => {
-      opt.addEventListener('click', () => {
-        const val = opt.getAttribute('data-value');
-        updateActiveStyle(val);
-        chrome.storage.local.set({ linkedInStyle: val });
-      });
+  if (imageThemeSelect) {
+    chrome.storage.local.get(['imageTheme'], (result) => {
+      imageThemeSelect.value = result.imageTheme || 'random';
+    });
+    imageThemeSelect.addEventListener('change', (e) => {
+      chrome.storage.local.set({ imageTheme: e.target.value });
     });
   }
 
@@ -44,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       submitBtn.textContent = 'Submitting...';
       submitBtn.disabled = true;
+      submitBtn.style.cursor = 'not-allowed';
 
       try {
         // Fetch logs from background script
@@ -53,8 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const logs = response?.logs || [];
         
+        // Timeout for fetch
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
         // POST to our endpoint
-        const apiRes = await fetch("http://localhost:3000/api/report", {
+        const apiRes = await fetch("https://codeship-bay.vercel.app/api/report", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -62,8 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
             description,
             consoleLogs: logs.join('\n'),
             source: 'extension'
-          })
+          }),
+          signal: controller.signal
         });
+        
+        clearTimeout(timeoutId);
 
         if (apiRes.ok) {
           statusDiv.textContent = 'Report submitted!';
@@ -74,11 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
           statusDiv.style.color = '#ef4444';
         }
       } catch (e) {
-        statusDiv.textContent = 'Error: ' + e.message;
+        statusDiv.textContent = 'Error: ' + (e.name === 'AbortError' ? 'Request timed out' : e.message);
         statusDiv.style.color = '#ef4444';
       } finally {
         submitBtn.textContent = 'Submit with Logs';
         submitBtn.disabled = false;
+        submitBtn.style.cursor = 'pointer';
       }
     });
   }

@@ -144,13 +144,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       let base64Image = null;
       try {
         await setupOffscreenDocument('offscreen.html');
+        
+        const data = await chrome.storage.local.get(["imageTheme"]);
+        const imageTheme = data.imageTheme || "random";
+        
         const response = await chrome.runtime.sendMessage({
           target: 'offscreen',
           type: 'GENERATE_IMAGE',
           data: {
             code: message.payload.code,
             language: message.payload.language,
-            title: message.payload.title
+            title: message.payload.title,
+            imageTheme: imageTheme
           }
         });
         if (response && response.success) {

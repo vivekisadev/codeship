@@ -23,14 +23,6 @@
       gap: 12px;
       margin-bottom: 8px;
     }
-    .icon {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 8px;
-      border-radius: 10px;
-      display: flex;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
     h1 {
       font-size: 1.1rem;
       margin: 0;
@@ -166,12 +158,6 @@
 </head>
 <body>
   <div class="header">
-    <div class="icon">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ededed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="16 18 22 12 16 6"></polyline>
-        <polyline points="8 6 2 12 8 18"></polyline>
-      </svg>
-    </div>
     <h1>Codeship</h1>
   </div>
   
@@ -181,63 +167,28 @@
   </div>
 
   <p>Your accepted solutions are automatically captured and synced to your GitHub repository in the background.</p>
-  <div class="style-panel">
-    <label style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 4px; font-weight: 500;">LinkedIn Post Style:</label>
-    
-    <div class="style-option" data-value="random">
-      <div class="style-icon">🎲</div>
-      <div class="style-text">
-        <div class="style-title">Random Rotation</div>
-        <div class="style-desc">Keeps it fresh (Default)</div>
-      </div>
-      <div class="style-check">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-    </div>
-    
-    <div class="style-option" data-value="0">
-      <div class="style-icon">💼</div>
-      <div class="style-text">
-        <div class="style-title">Professional</div>
-        <div class="style-desc">Clean and formal</div>
-      </div>
-      <div class="style-check">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-    </div>
-    
-    <div class="style-option" data-value="1">
-      <div class="style-icon">🚀</div>
-      <div class="style-text">
-        <div class="style-title">Enthusiastic</div>
-        <div class="style-desc">Hype and energetic</div>
-      </div>
-      <div class="style-check">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-    </div>
+  <div style="margin-bottom: 16px;">
+    <label for="imageTheme" style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 8px; font-weight: 500;">Code Image Theme:</label>
+    <select id="imageTheme" class="input-field" style="cursor: pointer;">
+      <option value="random" style="background: #1a1a1a; color: #ededed;">Random Rotation (Default)</option>
+      <option value="tokyoNight" style="background: #1a1a1a; color: #ededed;">Tokyo Night</option>
+      <option value="dracula" style="background: #1a1a1a; color: #ededed;">Dracula</option>
+      <option value="nord" style="background: #1a1a1a; color: #ededed;">Nord</option>
+      <option value="monokai" style="background: #1a1a1a; color: #ededed;">Monokai</option>
+      <option value="githubDark" style="background: #1a1a1a; color: #ededed;">GitHub Dark</option>
+      <option value="githubLight" style="background: #1a1a1a; color: #ededed;">GitHub Light</option>
+    </select>
+  </div>
 
-    <div class="style-option" data-value="2">
-      <div class="style-icon">🎯</div>
-      <div class="style-text">
-        <div class="style-title">Goal-Oriented</div>
-        <div class="style-desc">Focuses on milestones</div>
-      </div>
-      <div class="style-check">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-    </div>
-
-    <div class="style-option" data-value="3">
-      <div class="style-icon">⚡</div>
-      <div class="style-text">
-        <div class="style-title">Brief & Direct</div>
-        <div class="style-desc">Short and punchy</div>
-      </div>
-      <div class="style-check">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-      </div>
-    </div>
+  <div style="margin-bottom: 24px;">
+    <label for="postStyle" style="display: block; font-size: 0.75rem; color: #a1a1aa; margin-bottom: 8px; font-weight: 500;">LinkedIn Post Style:</label>
+    <select id="postStyle" class="input-field" style="cursor: pointer;">
+      <option value="random" style="background: #1a1a1a; color: #ededed;">Random Rotation (Default)</option>
+      <option value="0" style="background: #1a1a1a; color: #ededed;">Clean & Professional</option>
+      <option value="1" style="background: #1a1a1a; color: #ededed;">Enthusiastic Hacker</option>
+      <option value="2" style="background: #1a1a1a; color: #ededed;">Goal Celebration</option>
+      <option value="3" style="background: #1a1a1a; color: #ededed;">Brief & Direct</option>
+    </select>
   </div>
   
   <a href="https://codeship-bay.vercel.app/dashboard" target="_blank" class="btn" style="margin-bottom: 12px; background: rgba(255,255,255,0.05); color: #ededed; border: 1px solid rgba(255,255,255,0.1);">View Dashboard</a>
