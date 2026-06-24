@@ -4,17 +4,21 @@ import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import crypto from "crypto";
 
+const getCorsHeaders = (req: Request) => {
+  const origin = req.headers.get("origin") || "*";
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
+};
+
 // Handle CORS for preflight requests from the extension
 export async function OPTIONS(req: Request) {
-  const origin = req.headers.get("origin") || "*";
   return new NextResponse(null, {
     status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": origin,
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Allow-Credentials": "true",
-    },
+    headers: getCorsHeaders(req),
   });
 }
 
@@ -71,13 +75,19 @@ export async function POST(req: Request) {
     const email = session?.user?.email || body.email;
 
     if (!email) {
-      return NextResponse.json({ error: "Unauthorized. Please log into Codeship." }, { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized. Please log into Codeship." },
+        { status: 401, headers: getCorsHeaders(req) }
+      );
     }
 
     const { title, titleSlug, code, language, runtime, memory, linkedInStyle, base64Image } = body;
 
     if (!title || !code || !language || !titleSlug) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400, headers: getCorsHeaders(req) }
+      );
     }
 
     const user = await prisma.user.findUnique({
@@ -91,7 +101,10 @@ export async function POST(req: Request) {
     const linkedinAccount = user?.accounts?.find(a => a.provider === "linkedin");
 
     if (!user || !githubToken || !user.targetRepo) {
-      return NextResponse.json({ error: "GitHub OAuth token or Target Repo not configured." }, { status: 400 });
+      return NextResponse.json(
+        { error: "GitHub OAuth token or Target Repo not configured." },
+        { status: 400, headers: getCorsHeaders(req) }
+      );
     }
 
     // Idempotent Check
@@ -102,7 +115,10 @@ export async function POST(req: Request) {
 
     if (existing) {
       // Already pushed this exact code for this problem
-      return NextResponse.json({ success: true, message: "Duplicate submission skipped." });
+      return NextResponse.json(
+        { success: true, message: "Duplicate submission skipped." },
+        { headers: getCorsHeaders(req) }
+      );
     }
 
     let finalTitle = title;
@@ -143,7 +159,10 @@ export async function POST(req: Request) {
     const pushSuccess = await pushToGitHub(user.targetRepo, githubToken, codePath, code, `Codeship: Added solution for ${title}`);
 
     if (!pushSuccess) {
-      return NextResponse.json({ error: "Failed to push to GitHub. Verify your target repo exists and Codeship has access." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Failed to push to GitHub. Verify your target repo exists and Codeship has access." },
+        { status: 400, headers: getCorsHeaders(req) }
+      );
     }
 
     // 2. Push Problem README
@@ -303,20 +322,15 @@ export async function POST(req: Request) {
       }
     }
 
-    return NextResponse.json({ success: true, message: "Successfully synced via Codeship!" }, {
-      headers: {
-        "Access-Control-Allow-Origin": req.headers.get("origin") || "*",
-        "Access-Control-Allow-Credentials": "true",
-      }
-    });
+    return NextResponse.json(
+      { success: true, message: "Successfully synced via Codeship!" },
+      { headers: getCorsHeaders(req) }
+    );
   } catch (error: any) {
     console.error("Sync Error:", error);
-    return NextResponse.json({ error: "Internal Server Error", details: error.message }, { 
-      status: 500,
-      headers: {
-        "Access-Control-Allow-Origin": req.headers.get("origin") || "*",
-        "Access-Control-Allow-Credentials": "true",
-      }
-    });
+    return NextResponse.json(
+      { error: "Internal Server Error", details: error.message },
+      { status: 500, headers: getCorsHeaders(req) }
+    );
   }
 }

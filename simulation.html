@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codeship — How It Works</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ─── Codeship Design Tokens (Dark Theme) ─── */
+  :root {
+    --background: #060608;
+    --surface-base: #0a0a0a;
+    --surface-elevated: rgba(255, 255, 255, 0.03);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-glow: rgba(255, 255, 255, 0.15);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #a1a1aa;
+    --text-tertiary: #6b7280;
+
+    --accent-primary: #ffffff;
+    --accent-secondary: #818cf8;
+
+    --success: #10b981;
+    --error: #ef4444;
+    --amber: #f59e0b;
+    --blue: #60a5fa;
+
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 9999px;
+
+    --noise-opacity: 0.06;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  /* ─── Mesh Gradient Orbs (from Codeship layout.tsx) ─── */
+  .mesh-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background: var(--background);
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: calc(0.25 * 0.05);
+    animation: float 25s infinite alternate ease-in-out;
+  }
+  .orb-1 {
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(236,72,153,0.15) 0%, transparent 70%);
+    top: -200px; left: -200px;
+  }
+  .orb-2 {
+    width: 900px; height: 900px;
+    background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+    bottom: -300px; right: -200px;
+    animation-delay: -5s;
+  }
+  .orb-3 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(96,165,250,0.15) 0%, transparent 70%);
+    top: 30%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -10s;
+  }
+  @keyframes float {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(30px, 20px) scale(1.05); }
+    100% { transform: translate(-20px, 30px) scale(0.95); }
+  }
+
+  /* ─── Noise Overlay (from Codeship globals.css) ─── */
+  .noise-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: 50;
+    opacity: var(--noise-opacity);
+    mix-blend-mode: overlay;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAB8fHwAAAAAAAABAQEAAAAAAAAAAADeAAAACHRSTlMACA8WGCEoM0V0vQAAAYBJREFUOMtjYMAOGFIZGDglGDiLGBiMwhgYvMIYGDaEMzBcDGdg6A1nYAiuYGAIBmIGhlQwhoP1wxgYpMIYGMShLBCc8xgY3H2BYjXnMRgc3RgYnIuAYnnnMRisE4FiZecxGGwjgcIuEYxhh0QwGIyigGIxJzAYzKKAYlkngGIJ5zEY7GKAYgnnMRjcExmchzIwnAxnYEgGYmEgRucxMBinMDDchjEwHINicxYDw200xQnOY2BIQFNciKY4Gk1xKJriODTF/nB17nAeA8PtcAaGJDDFU2GKw+AU14EpLoZTnA2mOB9OMQ9I8TSQYhOQYjeQYj+QYg2QYimQYjOQYgOQYhuQ4gQgxcFAihOAFKcBKc4HUpwFpNgHpHgKSPEMkOIZIMXzQIrXgRQvAClOA1K8AaR4E0jxNpDiHSDFe0CKD4AUHwIpfuQUZ0QpxohSjDGlGBNKMSaUYkwoxZhQijHhQHEklGJMJFCcCKU4AUp1JpRiTCjFmFCKMaEUY0IpxoRSjAmFGACu1v6t9v8X0gAAAABJRU5ErkJggg==");
+    background-repeat: repeat;
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 2rem;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-subtle);
+    background: var(--surface-elevated);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    letter-spacing: 0.04em;
+  }
+  .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse-dot 2s infinite; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(3rem, 8vw, 4.5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-tertiary) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    max-width: 560px;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+  }
+  .scroll-cue {
+    position: absolute;
+    bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-tertiary);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: bounce-down 2s ease infinite;
+  }
+  @keyframes bounce-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+  .scroll-cue svg { opacity: 0.4; }
+
+  /* ─── Section Layout ─── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .section-number {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1rem;
+    letter-spacing: 0.08em;
+  }
+  .section-number.purple { background: rgba(129,140,248,0.1); color: var(--accent-secondary); border: 1px solid rgba(129,140,248,0.15); }
+  .section-number.green  { background: rgba(16,185,129,0.1);  color: var(--success);          border: 1px solid rgba(16,185,129,0.15); }
+  .section-number.amber  { background: rgba(245,158,11,0.1);  color: var(--amber);            border: 1px solid rgba(245,158,11,0.15); }
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+  .section-subtitle {
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1rem;
+  }
+
+  /* ─── Bento Card (Simulation Canvas) ─── */
+  .sim-canvas {
+    background: var(--surface-base);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 4px 12px -4px rgba(0, 0, 0, 0.03),
+      0 1px 2px rgba(0, 0, 0, 0.01);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sim-canvas:hover {
+    border-color: var(--border-glow);
+  }
+
+  /* ─── Node Boxes ─── */
+  .offscreen-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 2rem;
+  }
+  .node-box {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .node-box.active {
+    border-color: rgba(129,140,248,0.4);
+    box-shadow: 0 0 30px rgba(129,140,248,0.1);
+  }
+  .node-box.success {
+    border-color: rgba(16,185,129,0.4);
+    box-shadow: 0 0 30px rgba(16,185,129,0.1);
+  }
+  .node-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 1.3rem;
+  }
+  .node-icon.purple { background: rgba(129,140,248,0.1); }
+  .node-icon.blue   { background: rgba(96,165,250,0.1); }
+  .node-icon.green  { background: rgba(16,185,129,0.1); }
+  .node-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+  .node-sub {
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── Arrows ─── */
+  .arrow-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 4px;
+    width: 60px;
+    margin: 0 -4px;
+  }
+  .arrow-line {
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: var(--border-subtle);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .arrow-line .fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent-secondary);
+    border-radius: 2px;
+    transition: width 0.6s ease;
+    box-shadow: 0 0 8px var(--accent-secondary);
+  }
+  .arrow-line .fill.go { width: 100%; }
+  .arrow-head {
+    position: absolute;
+    right: -4px;
+    width: 0; height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 6px solid var(--border-subtle);
+    transition: border-left-color 0.4s ease;
+  }
+  .arrow-head.go { border-left-color: var(--accent-secondary); }
+
+  /* ─── Buttons (Codeship btn-primary style) ─── */
+  .sim-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 28px;
+    background: var(--text-primary);
+    color: var(--background);
+    border: none;
+    border-radius: var(--radius-full);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .sim-btn::before {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 0%;
+    background: var(--accent-secondary);
+    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+    border-radius: var(--radius-full);
+  }
+  .sim-btn:hover {
+    transform: translateY(-1px) scale(1.01);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+    color: #fff;
+  }
+  .sim-btn:hover::before { height: 100%; }
+  .sim-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  .sim-btn:disabled:hover::before { height: 0; }
+
+  /* ─── Comparison Grid ─── */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .approach-card {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  .approach-header {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+  }
+  .approach-header.bad  { background: rgba(239,68,68,0.06);  color: var(--error);   border-bottom: 1px solid rgba(239,68,68,0.1); }
+  .approach-header.good { background: rgba(16,185,129,0.06); color: var(--success); border-bottom: 1px solid rgba(16,185,129,0.1); }
+  .approach-body {
+    padding: 20px;
+    background: var(--surface-elevated);
+    min-height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* ─── Fake Browser ─── */
+  .fake-browser {
+    background: var(--background);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .fake-browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .fake-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .fake-dot.r { background: #ef4444; } .fake-dot.y { background: #f59e0b; } .fake-dot.g { background: #22c55e; }
+  .fake-browser-content {
+    padding: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    line-height: 1.8;
+    color: var(--text-tertiary);
+    min-height: 120px;
+  }
+  .dom-line {
+    opacity: 0.4;
+    transition: all 0.3s ease;
+  }
+  .dom-line.highlight { opacity: 1; color: var(--success); }
+  .dom-line.broken    { opacity: 1; color: var(--error); text-decoration: line-through; }
+
+  /* ─── Log Lines ─── */
+  .log-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s ease;
+  }
+  .log-line.show { opacity: 1; transform: translateY(0); }
+  .log-line.success { background: rgba(16,185,129,0.08); color: var(--success); }
+  .log-line.error   { background: rgba(239,68,68,0.08);  color: var(--error); }
+  .log-line.info    { background: rgba(96,165,250,0.08);  color: var(--blue); }
+
+  /* ─── Backoff Chart ─── */
+  .backoff-timeline {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 200px;
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .backoff-bar-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .backoff-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-tertiary);
+    text-align: center;
+  }
+  .backoff-bar {
+    width: 100%;
+    max-width: 60px;
+    border-radius: 6px 6px 0 0;
+    height: 0;
+    transition: height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+  .backoff-bar .bar-value {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .backoff-bar.show .bar-value { opacity: 1; }
+  .backoff-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    margin-top: 6px;
+    text-align: center;
+  }
+  .queue-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+  }
+  .queue-status-bar .indicator {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    animation: pulse-dot 1.5s infinite;
+  }
+
+  /* ─── Divider ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ─── Footer ─── */
+  .footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-tertiary);
+    font-size: 0.8rem;
+  }
+  .footer a {
+    color: var(--accent-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer a:hover { color: var(--text-primary); }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 768px) {
+    .offscreen-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .arrow-track {
+      width: 4px; height: 40px;
+      margin: -4px auto;
+    }
+    .arrow-line { width: 2px; height: 100%; }
+    .arrow-line .fill { width: 100% !important; height: 0%; transition: height 0.6s ease; }
+    .arrow-line .fill.go { height: 100%; }
+    .arrow-head {
+      right: auto; bottom: -4px; top: auto;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--border-subtle);
+      border-bottom: none;
+    }
+    .arrow-head.go { border-top-color: var(--accent-secondary); border-left-color: transparent; }
+    .comparison-grid { grid-template-columns: 1fr; }
+    .sim-canvas { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Codeship Background Effects -->
+<div class="noise-overlay"></div>
+<div class="mesh-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> Interactive Simulation</div>
+  <h1>How Codeship Works</h1>
+  <p>A visual walkthrough of the three hardest engineering problems I solved — and how I turned "impossible" into production-grade features.</p>
+  <div class="scroll-cue">
+    SCROLL TO EXPLORE
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8l4 4 4-4"/></svg>
+  </div>
+</section>
+
+<!-- ═══════════ CHALLENGE 1 ═══════════ -->
+<div class="divider"></div>
+<section class="section" id="c1">
+  <div class="section-header">
+    <div class="section-number purple">CHALLENGE 01</div>
+    <h2 class="section-title">Image Generation in Manifest V3</h2>
+    <p class="section-subtitle">Service Workers have no DOM. Without a DOM, html2canvas can't render images. Here's how I used the Offscreen API to solve it.</p>
+  </div>
+
+  <div class="sim-canvas">
+    <div class="offscreen-grid" id="offscreenGrid">
+      <div class="node-box" id="n1-sw">
+        <div class="node-icon purple">⚙️</div>
+        <div class="node-label">Service Worker</div>
+        <div class="node-sub">background.js</div>
+      </div>
+      <div class="arrow-track"><div class="arrow-line"><div class="fill" id="a1-fill"></div></div><div class="arrow-head" id="a1-head"></div></div>
+      <div class="node-box" id="n1-off">
+        <div class="node-icon blue">🖼️</div>
+        <div class="node-label">Offscreen Document</div>
+        <div class="node-sub">offscreen.html</div>
+      </div>
+      <div class="arrow-track"><div class="arrow-line"><div class="fill" id="a2-fill"></div></div><div class="arrow-head" id="a2-head"></div></div>
+      <div class="node-box" id="n1-out">
+        <div class="node-icon green">✅</div>
+        <div class="node-label">Base64 Image</div>
+        <div class="node-sub">ready to upload</div>
+      </div>
+    </div>
+
+    <div id="c1-logs" style="margin-bottom:1.5rem;">
+      <div class="log-line info"    id="c1-l1">→ Submission received: "Two Sum" (Python)</div>
+      <div class="log-line info"    id="c1-l2">→ Spawning offscreen document...</div>
+      <div class="log-line info"    id="c1-l3">→ Rendering code with theme: "Dracula"</div>
+      <div class="log-line info"    id="c1-l4">→ html2canvas snapshot captured (1200×630)</div>
+      <div class="log-line success" id="c1-l5">✓ Base64 image returned to Service Worker</div>
+      <div class="log-line success" id="c1-l6">✓ Offscreen document destroyed. Zero memory leaks.</div>
+    </div>
+
+    <button class="sim-btn" id="btn-c1" onclick="runC1()">▶ Run Simulation</button>
+  </div>
+</section>
+
+<!-- ═══════════ CHALLENGE 2 ═══════════ -->
+<div class="divider"></div>
+<section class="section" id="c2">
+  <div class="section-header">
+    <div class="section-number green">CHALLENGE 02</div>
+    <h2 class="section-title">Network Interception vs DOM Scraping</h2>
+    <p class="section-subtitle">Instead of reading the fragile UI, Codeship intercepts the raw GraphQL network responses — making it immune to UI redesigns.</p>
+  </div>
+
+  <div class="sim-canvas">
+    <div class="comparison-grid">
+      <div class="approach-card">
+        <div class="approach-header bad">✕ DOM Scraping (Fragile)</div>
+        <div class="approach-body">
+          <div class="fake-browser">
+            <div class="fake-browser-bar"><span class="fake-dot r"></span><span class="fake-dot y"></span><span class="fake-dot g"></span></div>
+            <div class="fake-browser-content">
+              <div class="dom-line" id="dom-1">&lt;div class="result-<span id="dom-cls">xQ2f</span>"&gt;</div>
+              <div class="dom-line" id="dom-2">&nbsp;&nbsp;&lt;span&gt;Accepted&lt;/span&gt;</div>
+              <div class="dom-line" id="dom-3">&lt;/div&gt;</div>
+            </div>
+          </div>
+          <div id="bad-logs">
+            <div class="log-line info"    id="b-l1">→ Searching for .result-xQ2f …</div>
+            <div class="log-line success" id="b-l2">✓ Found! Scraping text…</div>
+            <div class="log-line error"   id="b-l3">✕ LeetCode updated their class names</div>
+            <div class="log-line error"   id="b-l4">✕ .result-xQ2f not found. Extension BROKE.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="approach-card">
+        <div class="approach-header good">✓ Network Interception (Robust)</div>
+        <div class="approach-body">
+          <div class="fake-browser">
+            <div class="fake-browser-bar"><span class="fake-dot r"></span><span class="fake-dot y"></span><span class="fake-dot g"></span></div>
+            <div class="fake-browser-content">
+              <div class="dom-line" id="net-1">fetch("/graphql") → POST</div>
+              <div class="dom-line" id="net-2">{ "submission": { </div>
+              <div class="dom-line" id="net-3">&nbsp;&nbsp; "status": "Accepted",</div>
+              <div class="dom-line" id="net-4">&nbsp;&nbsp; "code": "def two_sum..." </div>
+              <div class="dom-line" id="net-5">}}</div>
+            </div>
+          </div>
+          <div id="good-logs">
+            <div class="log-line info"    id="g-l1">→ Intercepted fetch("/graphql")</div>
+            <div class="log-line info"    id="g-l2">→ Detected "Accepted" in response</div>
+            <div class="log-line success" id="g-l3">✓ Code captured from network payload</div>
+            <div class="log-line success" id="g-l4">✓ UI can change freely. We don't care.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="sim-btn" id="btn-c2" onclick="runC2()">▶ Run Simulation</button>
+  </div>
+</section>
+
+<!-- ═══════════ CHALLENGE 3 ═══════════ -->
+<div class="divider"></div>
+<section class="section" id="c3">
+  <div class="section-header">
+    <div class="section-number amber">CHALLENGE 03</div>
+    <h2 class="section-title">Exponential Backoff & Retry Queue</h2>
+    <p class="section-subtitle">When the network drops, submissions are queued locally. The retry delay doubles each attempt, then instantly flushes when connectivity is restored.</p>
+  </div>
+
+  <div class="sim-canvas">
+    <div class="queue-status-bar" id="queue-bar">
+      <span class="indicator" id="q-indicator" style="background:var(--error)"></span>
+      <span id="q-status-text">Network: Offline — 1 submission queued</span>
+    </div>
+
+    <div class="backoff-timeline" id="backoff-chart">
+      <div class="backoff-bar-container">
+        <div class="backoff-bar" id="bb-1" style="background: linear-gradient(180deg, var(--error), #b91c1c);">
+          <span class="bar-value" style="color:var(--error)">1 min</span>
+        </div>
+        <div class="backoff-label">Attempt 1</div>
+        <div class="backoff-status" id="bs-1" style="color:var(--error)"></div>
+      </div>
+      <div class="backoff-bar-container">
+        <div class="backoff-bar" id="bb-2" style="background: linear-gradient(180deg, var(--amber), #d97706);">
+          <span class="bar-value" style="color:var(--amber)">2 min</span>
+        </div>
+        <div class="backoff-label">Attempt 2</div>
+        <div class="backoff-status" id="bs-2" style="color:var(--amber)"></div>
+      </div>
+      <div class="backoff-bar-container">
+        <div class="backoff-bar" id="bb-3" style="background: linear-gradient(180deg, var(--amber), #d97706);">
+          <span class="bar-value" style="color:var(--amber)">4 min</span>
+        </div>
+        <div class="backoff-label">Attempt 3</div>
+        <div class="backoff-status" id="bs-3" style="color:var(--amber)"></div>
+      </div>
+      <div class="backoff-bar-container">
+        <div class="backoff-bar" id="bb-4" style="background: linear-gradient(180deg, var(--amber), #b45309);">
+          <span class="bar-value" style="color:var(--amber)">8 min</span>
+        </div>
+        <div class="backoff-label">Attempt 4</div>
+        <div class="backoff-status" id="bs-4" style="color:var(--amber)"></div>
+      </div>
+      <div class="backoff-bar-container">
+        <div class="backoff-bar" id="bb-5" style="background: linear-gradient(180deg, var(--success), #16a34a);">
+          <span class="bar-value" style="color:var(--success)">✓ Online</span>
+        </div>
+        <div class="backoff-label">Reconnect</div>
+        <div class="backoff-status" id="bs-5" style="color:var(--success)"></div>
+      </div>
+    </div>
+
+    <div id="c3-logs" style="margin-bottom:1.5rem;">
+      <div class="log-line error"   id="c3-l1">✕ POST /api/github failed — network offline</div>
+      <div class="log-line info"    id="c3-l2">→ Saved to chrome.storage.local queue</div>
+      <div class="log-line error"   id="c3-l3">✕ Retry 1 failed — waiting 1 min</div>
+      <div class="log-line error"   id="c3-l4">✕ Retry 2 failed — waiting 2 min</div>
+      <div class="log-line error"   id="c3-l5">✕ Retry 3 failed — waiting 4 min</div>
+      <div class="log-line error"   id="c3-l6">✕ Retry 4 failed — waiting 8 min</div>
+      <div class="log-line success" id="c3-l7">✓ Network restored! Flushing queue…</div>
+      <div class="log-line success" id="c3-l8">✓ Submission pushed to GitHub successfully</div>
+    </div>
+
+    <button class="sim-btn" id="btn-c3" onclick="runC3()">▶ Run Simulation</button>
+  </div>
+</section>
+
+<div class="divider"></div>
+<footer class="footer">
+  Built with ☕ and stubbornness by <a href="https://codeship-bay.vercel.app" target="_blank">Codeship</a>
+</footer>
+
+<script>
+/* ─── CHALLENGE 1: Offscreen API ─── */
+function runC1() {
+  const btn = document.getElementById('btn-c1');
+  btn.disabled = true; btn.textContent = 'Running…';
+
+  ['n1-sw','n1-off','n1-out'].forEach(id => document.getElementById(id).className = 'node-box');
+  ['a1-fill','a2-fill'].forEach(id => document.getElementById(id).className = 'fill');
+  ['a1-head','a2-head'].forEach(id => document.getElementById(id).className = 'arrow-head');
+  for (let i = 1; i <= 6; i++) document.getElementById('c1-l'+i).classList.remove('show');
+
+  const steps = [
+    [300,  () => { document.getElementById('n1-sw').classList.add('active'); document.getElementById('c1-l1').classList.add('show'); }],
+    [800,  () => { document.getElementById('a1-fill').classList.add('go'); document.getElementById('a1-head').classList.add('go'); document.getElementById('c1-l2').classList.add('show'); }],
+    [1400, () => { document.getElementById('n1-sw').classList.remove('active'); document.getElementById('n1-off').classList.add('active'); document.getElementById('c1-l3').classList.add('show'); }],
+    [2200, () => { document.getElementById('c1-l4').classList.add('show'); }],
+    [2800, () => { document.getElementById('a2-fill').classList.add('go'); document.getElementById('a2-head').classList.add('go'); document.getElementById('c1-l5').classList.add('show'); }],
+    [3400, () => { document.getElementById('n1-off').classList.remove('active'); document.getElementById('n1-out').classList.add('success'); document.getElementById('c1-l6').classList.add('show'); }],
+    [4200, () => { btn.disabled = false; btn.textContent = '▶ Run Again'; }],
+  ];
+  steps.forEach(([ms, fn]) => setTimeout(fn, ms));
+}
+
+/* ─── CHALLENGE 2: Network Interception ─── */
+function runC2() {
+  const btn = document.getElementById('btn-c2');
+  btn.disabled = true; btn.textContent = 'Running…';
+
+  for (let i = 1; i <= 4; i++) { document.getElementById('b-l'+i).classList.remove('show'); document.getElementById('g-l'+i).classList.remove('show'); }
+  ['dom-1','dom-2','dom-3'].forEach(id => { const el = document.getElementById(id); el.classList.remove('highlight','broken'); });
+  ['net-1','net-2','net-3','net-4','net-5'].forEach(id => document.getElementById(id).classList.remove('highlight'));
+  document.getElementById('dom-cls').textContent = 'xQ2f';
+
+  const steps = [
+    [400,  () => { document.getElementById('b-l1').classList.add('show'); ['dom-1','dom-2','dom-3'].forEach(id => document.getElementById(id).classList.add('highlight')); }],
+    [1000, () => { document.getElementById('b-l2').classList.add('show'); }],
+    [1800, () => { document.getElementById('dom-cls').textContent = 'aZ9k'; ['dom-1','dom-2','dom-3'].forEach(id => { const el = document.getElementById(id); el.classList.remove('highlight'); el.classList.add('broken'); }); document.getElementById('b-l3').classList.add('show'); }],
+    [2400, () => { document.getElementById('b-l4').classList.add('show'); }],
+    [3200, () => { document.getElementById('g-l1').classList.add('show'); document.getElementById('net-1').classList.add('highlight'); }],
+    [3800, () => { document.getElementById('g-l2').classList.add('show'); ['net-2','net-3','net-4','net-5'].forEach(id => document.getElementById(id).classList.add('highlight')); }],
+    [4400, () => { document.getElementById('g-l3').classList.add('show'); }],
+    [5000, () => { document.getElementById('g-l4').classList.add('show'); }],
+    [5800, () => { btn.disabled = false; btn.textContent = '▶ Run Again'; }],
+  ];
+  steps.forEach(([ms, fn]) => setTimeout(fn, ms));
+}
+
+/* ─── CHALLENGE 3: Exponential Backoff ─── */
+function runC3() {
+  const btn = document.getElementById('btn-c3');
+  btn.disabled = true; btn.textContent = 'Running…';
+
+  for (let i = 1; i <= 5; i++) { document.getElementById('bb-'+i).style.height = '0'; document.getElementById('bb-'+i).classList.remove('show'); document.getElementById('bs-'+i).textContent = ''; }
+  for (let i = 1; i <= 8; i++) document.getElementById('c3-l'+i).classList.remove('show');
+  document.getElementById('q-indicator').style.background = 'var(--error)';
+  document.getElementById('q-status-text').textContent = 'Network: Offline — 1 submission queued';
+
+  const heights = [30, 55, 90, 140, 180];
+
+  const steps = [
+    [300,  () => { document.getElementById('c3-l1').classList.add('show'); }],
+    [800,  () => { document.getElementById('c3-l2').classList.add('show'); }],
+    [1400, () => { const b = document.getElementById('bb-1'); b.style.height = heights[0]+'px'; b.classList.add('show'); document.getElementById('bs-1').textContent = '✕ FAIL'; document.getElementById('c3-l3').classList.add('show'); }],
+    [2200, () => { const b = document.getElementById('bb-2'); b.style.height = heights[1]+'px'; b.classList.add('show'); document.getElementById('bs-2').textContent = '✕ FAIL'; document.getElementById('c3-l4').classList.add('show'); }],
+    [3000, () => { const b = document.getElementById('bb-3'); b.style.height = heights[2]+'px'; b.classList.add('show'); document.getElementById('bs-3').textContent = '✕ FAIL'; document.getElementById('c3-l5').classList.add('show'); }],
+    [3800, () => { const b = document.getElementById('bb-4'); b.style.height = heights[3]+'px'; b.classList.add('show'); document.getElementById('bs-4').textContent = '✕ FAIL'; document.getElementById('c3-l6').classList.add('show'); }],
+    [4800, () => {
+      document.getElementById('q-indicator').style.background = 'var(--success)';
+      document.getElementById('q-status-text').textContent = 'Network: Online — flushing queue…';
+      const b = document.getElementById('bb-5'); b.style.height = heights[4]+'px'; b.classList.add('show');
+      document.getElementById('bs-5').textContent = '✓ OK';
+      document.getElementById('c3-l7').classList.add('show');
+    }],
+    [5600, () => { document.getElementById('c3-l8').classList.add('show'); document.getElementById('q-status-text').textContent = 'Network: Online — queue empty ✓'; }],
+    [6400, () => { btn.disabled = false; btn.textContent = '▶ Run Again'; }],
+  ];
+  steps.forEach(([ms, fn]) => setTimeout(fn, ms));
+}
+
+/* ─── Scroll fade-in ─── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.sim-canvas').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

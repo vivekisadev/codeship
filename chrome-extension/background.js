@@ -184,8 +184,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           credentials: "include",
           body: JSON.stringify(finalPayload)
         })
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        .then(async res => {
+          if (!res.ok) {
+            let errMsg = `HTTP ${res.status}`;
+            try {
+              const errData = await res.json();
+              if (errData && errData.error) {
+                errMsg = errData.error;
+              }
+            } catch (_) {}
+            throw new Error(errMsg);
+          }
           return res.json();
         })
         .then(data => {
@@ -195,7 +204,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         .catch(err => {
           console.error("Codeship Background: Push Failed", err);
           enqueueSubmission(finalPayload);
-          sendResponse({ success: false, error: err.toString(), queued: true });
+          const errorMsg = err.toString().replace(/^Error:\s*/, "");
+          sendResponse({ success: false, error: errorMsg, queued: true });
         });
       });
     })();
