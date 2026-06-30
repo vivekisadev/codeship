@@ -28,6 +28,9 @@ export function Navbar({ rightContent }: NavbarProps) {
         top: "0",
         zIndex: 50,
         width: "100%",
+        height: "80px",
+        display: "flex",
+        alignItems: "center",
         backgroundColor: scrolled ? "var(--background)" : "transparent",
         borderBottom: scrolled
           ? "1px solid var(--border-subtle)"
@@ -42,10 +45,11 @@ export function Navbar({ rightContent }: NavbarProps) {
         transition={{ duration: 0.6 }}
         className="container"
         style={{
+          width: "100%",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: scrolled ? "12px 24px" : "24px 24px",
+          padding: scrolled ? "12px 24px" : "20px 24px",
           transition: "padding 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
@@ -61,7 +65,7 @@ export function Navbar({ rightContent }: NavbarProps) {
             className="display-font"
             style={{
               fontWeight: "900",
-              fontSize: scrolled ? "1.5rem" : "2rem",
+              fontSize: scrolled ? "1.5rem" : "1.85rem",
               letterSpacing: "-0.04em",
               color: "var(--text-primary)",
               transition: "all 0.5s cubic-bezier(0.22, 1, 0.36, 1)",

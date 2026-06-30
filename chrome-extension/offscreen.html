@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Codeshot — Code to Image</title>
+<title>Codeship — Code to Image</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="html2canvas.min.js"></script>
 <script src="offscreen.js"></script>
@@ -254,7 +254,10 @@
   #codeContent{ flex:1; }
   #codeContent .line{ height: var(--lh, 1.65em); min-height: var(--lh, 1.65em); }
   #watermark{
-    text-align:right; font-size:11px; padding: 0 20px 14px; opacity:0.4; font-family: 'Inter', sans-serif;
+    text-align:right; font-size:13px; padding: 0 20px 14px; opacity:0.75;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.04em;
   }
 
   ::-webkit-scrollbar{ height:8px; width:8px; }
@@ -269,7 +272,7 @@
     <div class="brand">
       <div class="logo">&lt;/&gt;</div>
       <div>
-        <h1>Codeshot</h1>
+        <h1>Codeship</h1>
         <p>Turn code into beautiful images</p>
       </div>
     </div>
@@ -425,7 +428,7 @@ console.log(fibonacci(10)); // 55</textarea>
         <label class="switch"><input type="checkbox" id="toggleWatermark" checked><span class="slider-toggle"></span></label>
       </div>
       <div class="section" style="margin-top:6px;">
-        <input type="text" id="watermarkInput" value="Codeshot" placeholder="Watermark text">
+        <input type="text" id="watermarkInput" value="Codeship" placeholder="Watermark text">
       </div>
 
       <div class="section">
@@ -461,7 +464,7 @@ console.log(fibonacci(10)); // 55</textarea>
           <div id="lineNumbers"></div>
           <div id="codeContent"></div>
         </div>
-        <div id="watermark">Codeshot</div>
+        <div id="watermark">Codeship</div>
       </div>
       <div id="noiseOverlay"></div>
     </div>
@@ -931,7 +934,7 @@ let state = {
   highlightLines: '',
   noise: false,
   showWatermark: true,
-  watermarkText: 'Codeshot',
+  watermarkText: 'Codeship',
   exportScale: 3,
 };
 
@@ -1053,7 +1056,7 @@ function render(){
   const wm = document.getElementById('watermark');
   wm.style.display = state.showWatermark ? 'block' : 'none';
   wm.style.color = theme.text;
-  wm.textContent = state.watermarkText || 'Codeshot';
+  wm.textContent = state.watermarkText || 'Codeship';
 }
 
 /* ============================================================
@@ -1179,7 +1182,7 @@ document.getElementById('downloadBtn').addEventListener('click', async ()=>{
     const canvas = await renderCanvas(state.exportScale);
     const link = document.createElement('a');
     const fname = (document.getElementById('filenameInput').value || 'code').replace(/\.[^.]+$/, '');
-    link.download = `${fname}-codeshot.png`;
+    link.download = `${fname}-codeship.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
   } catch(err){
