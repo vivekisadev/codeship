@@ -5,7 +5,6 @@
 <title>Codeship — Code to Image</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="html2canvas.min.js"></script>
-<script src="offscreen.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&family=Source+Code+Pro:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Mono:wght@400;700&family=Roboto+Mono:wght@400;500;600&family=Inconsolata:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -664,7 +663,7 @@ const LANG_CONFIG = {
   go: { line:'//', block:['/*','*/'], kw:['func','return','if','else','for','range','switch','case','break','continue','package','import','var','const','type','struct','interface','map','chan','go','defer','select','default','nil','true','false','iota'] },
   rust: { line:'//', block:['/*','*/'], kw:['fn','let','mut','return','if','else','for','while','loop','match','break','continue','struct','enum','impl','trait','pub','use','mod','crate','self','Self','as','ref','move','async','await','where','dyn','static','const','true','false','None','Some','Ok','Err'] },
   java: { line:'//', block:['/*','*/'], kw:['public','private','protected','class','interface','extends','implements','static','final','void','return','if','else','for','while','do','switch','case','break','continue','new','this','super','import','package','try','catch','finally','throw','throws','null','true','false','abstract','enum','instanceof'] },
-  cpp: { line:'//', block:['/*','*/'], kw:['int','float','double','char','bool','void','return','if','else','for','while','do','switch','case','break','continue','class','struct','public','private','protected','new','delete','this','namespace','using','include','template','typename','const','static','virtual','override','nullptr','true','false','auto'] },
+  cpp: { line:'//', block:['/*','*/'], kw:['int','float','double','char','bool','void','return','if','else','for','while','do','switch','case','break','continue','class','struct','public','private','protected','new','delete','this','namespace','using','include','template','typename','const','static','virtual','override','nullptr','true','false','auto','vector','string','map','set','unordered_map','unordered_set'] },
   php: { line:'//', block:['/*','*/'], kw:['function','return','if','else','elseif','for','foreach','while','do','switch','case','break','continue','class','extends','implements','public','private','protected','static','new','this','namespace','use','try','catch','finally','throw','echo','print','null','true','false','array','as'] },
   ruby: { line:'#', block:null, kw:['def','end','return','if','elsif','else','unless','for','while','until','case','when','break','next','class','module','require','require_relative','new','self','nil','true','false','do','yield','begin','rescue','ensure','attr_accessor','puts'] },
   sql: { line:'--', block:['/*','*/'], kw:['SELECT','FROM','WHERE','INSERT','INTO','VALUES','UPDATE','SET','DELETE','JOIN','LEFT','RIGHT','INNER','OUTER','ON','GROUP','BY','ORDER','HAVING','AS','AND','OR','NOT','NULL','CREATE','TABLE','PRIMARY','KEY','FOREIGN','REFERENCES','DROP','ALTER','LIMIT','DISTINCT','COUNT','SUM','AVG','MAX','MIN'] },
@@ -1238,5 +1237,6 @@ buildThemeGrid();
 buildBgGrid();
 render();
 </script>
+<script src="offscreen.js"></script>
 </body>
 </html>
