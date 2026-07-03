@@ -195,17 +195,18 @@
       <option value="rosePineDawn" style="background: #1a1a1a; color: #ededed;">Rosé Pine Dawn</option>
     </select>
     <div id="themePreview" style="margin-top: 12px; border-radius: 6px; overflow: hidden; font-family: monospace; font-size: 11px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;">
-      <div id="previewHeader" style="display: flex; gap: 5px; padding: 6px 8px; background: #16161e;">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: #f7768e;"></div>
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: #e0af68;"></div>
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: #9ece6a;"></div>
+      <div id="previewHeader" style="padding: 6px 8px; display: flex; align-items: center; gap: 4px;">
+        <span class="preview-dot" style="width: 8px; height: 8px; border-radius: 50%;"></span>
+        <span class="preview-dot" style="width: 8px; height: 8px; border-radius: 50%;"></span>
+        <span class="preview-dot" style="width: 8px; height: 8px; border-radius: 50%;"></span>
       </div>
-      <div id="previewBody" style="padding: 10px; background: #1a1b26; color: #a9b1d6; line-height: 1.5;">
-        <span id="previewKeyword" style="color: #bb9af7;">function</span> <span id="previewFunc" style="color: #7aa2f7;">solve</span>() {<br>
-        &nbsp;&nbsp;<span style="color: inherit;">console</span>.<span id="previewMethod" style="color: #7aa2f7;">log</span>(<span id="previewString" style="color: #9ece6a;">"Accepted"</span>);<br>
+      <div id="previewBody" style="padding: 8px 12px;">
+        <span id="previewKeyword">function</span> <span id="previewFunc">hello</span>() {<br>
+        &nbsp;&nbsp;<span id="previewMethod">console.log</span>(<span id="previewString">"Codeship!"</span>);<br>
         }
       </div>
     </div>
+    <button id="logBtn" style="margin-top: 12px; padding: 6px; border-radius: 6px; width: 100%; background: #333; color: white; border: 1px solid #555; cursor: pointer;">Copy Debug Logs</button>
   </div>
 
   <div style="margin-bottom: 24px;">

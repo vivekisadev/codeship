@@ -1,9 +1,12 @@
 // inject.js runs in the page context, so it can hook into window.fetch
 
-const originalFetch = window.fetch;
-let lastSubmission = null;
+if (!window.__CODESHIP_INJECTED) {
+  window.__CODESHIP_INJECTED = true;
 
-window.fetch = async function (...args) {
+  const originalFetch = window.fetch;
+  let lastSubmission = null;
+
+  window.fetch = async function (...args) {
   const url = args[0];
   const options = args[1];
 
@@ -66,3 +69,4 @@ window.fetch = async function (...args) {
 };
 
 console.log("Codeship: Fetch interceptor injected.");
+}

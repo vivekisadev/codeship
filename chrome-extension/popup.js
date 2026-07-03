@@ -146,4 +146,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+  
+  // Debug logs button
+  const logBtn = document.getElementById('logBtn');
+  if (logBtn) {
+    logBtn.addEventListener('click', () => {
+      chrome.runtime.sendMessage({ type: "GET_CONSOLE_LOGS" }, (res) => {
+        if (res && res.logs) {
+          navigator.clipboard.writeText(JSON.stringify(res.logs, null, 2))
+            .then(() => alert("Logs copied to clipboard! Please paste them to me."))
+            .catch(err => alert("Failed to copy logs: " + err));
+        } else {
+          alert("No logs found or background script unresponsive.");
+        }
+      });
+    });
+  }
 });
