@@ -2,7 +2,12 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-const connectionString = `${process.env.DATABASE_URL}`;
+let connectionString = `${process.env.DATABASE_URL}`;
+
+// Fix for Node Postgres v9 SSL mode security warning
+if (!connectionString.includes("uselibpqcompat=true")) {
+  connectionString += connectionString.includes("?") ? "&uselibpqcompat=true" : "?uselibpqcompat=true";
+}
 
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
